@@ -7,4 +7,9 @@ class User < ApplicationRecord
   
   has_one :patient
 
+  scope :admins, -> { where(role: 'admin') }
+  scope :doctors, -> { where(role: 'doctor') }
+  scope :nurses, -> { where(role: 'nurse') }
+  scope :patients, -> { where(role: 'patient') }
+
 end
