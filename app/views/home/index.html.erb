@@ -1,1 +1,8 @@
+<% if user_signed_in? %> 
+ <div> Welcome <%= current_user.email %> / <%=current_user.created_at%> / <%=current_user.encrypted_password %></div> 
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+<% else %>
+  <%= button_to "Sign in", new_user_session_path %> 
+<% end %>
+
 <h1>chegou aqui ?? </h1>
