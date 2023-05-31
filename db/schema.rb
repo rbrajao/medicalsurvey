@@ -10,7 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_29_083554) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_31_124054) do
+  create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.date "birth_date"
+    t.string "sex"
+    t.string "self_perception"
+    t.string "night_as_patient"
+    t.string "searched_doctor"
+    t.string "pain_that_impairs"
+    t.string "usage_profile"
+    t.string "many_daily_medications"
+    t.string "have_diabetes"
+    t.string "glycated_hemoglobin"
+    t.string "heart_attack"
+    t.string "family_history_of_cancer"
+    t.string "what_family_cancer"
+    t.string "had_cancer"
+    t.string "what_your_cancer"
+    t.string "treatment_of_depression"
+    t.string "memory_disease"
+    t.string "jitters_that_impairs"
+    t.string "treatment_for_blood_pressure"
+    t.string "cholesterol_control"
+    t.integer "systolic_blood_pressure"
+    t.string "total_cholesterol"
+    t.string "hdl"
+    t.string "abdominal_circumference"
+    t.string "smoker"
+    t.bigint "cigarettes_quantity"
+    t.bigint "many_years_smoked"
+    t.string "minutes_of_physical_activity"
+    t.string "active_sex_life"
+    t.string "someone_to_look"
+    t.string "who_needs_assistance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "survey_fixed_id", null: false
+    t.index ["patient_id"], name: "index_answers_on_patient_id"
+    t.index ["survey_fixed_id"], name: "index_answers_on_survey_fixed_id"
+  end
+
   create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "survey_id", null: false
     t.bigint "organization_id", null: false
@@ -47,6 +87,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_083554) do
     t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
+  create_table "survey_fixeds", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "surveys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.boolean "status"
@@ -68,6 +113,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_083554) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "patients"
+  add_foreign_key "answers", "survey_fixeds"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "surveys"
   add_foreign_key "patients", "events"

@@ -1,0 +1,69 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient: one
+  birth_date: 2023-05-31
+  sex: MyString
+  self_perception: MyString
+  night_as_patient: MyString
+  searched_doctor: MyString
+  pain_that_impairs: MyString
+  usage_profile: MyString
+  many_daily_medications: MyString
+  have_diabetes: MyString
+  glycated_hemoglobin: MyString
+  heart_attack: MyString
+  family_history_of_cancer: MyString
+  what_family_cancer: MyString
+  had_cancer: MyString
+  what_your_cancer: MyString
+  treatment_of_depression: MyString
+  memory_disease: MyString
+  jitters_that_impairs: MyString
+  treatment_for_blood_pressure: MyString
+  cholesterol_control: MyString
+  systolic_blood_pressure: 1
+  total_cholesterol: MyString
+  hdl: MyString
+  abdominal_circumference: MyString
+  smoker: MyString
+  cigarettes_quantity: 
+  many_years_smoked: 
+  minutes_of_physical_activity: MyString
+  active_sex_life: MyString
+  someone_to_look: MyString
+  who_needs_assistance: MyString
+
+two:
+  patient: two
+  birth_date: 2023-05-31
+  sex: MyString
+  self_perception: MyString
+  night_as_patient: MyString
+  searched_doctor: MyString
+  pain_that_impairs: MyString
+  usage_profile: MyString
+  many_daily_medications: MyString
+  have_diabetes: MyString
+  glycated_hemoglobin: MyString
+  heart_attack: MyString
+  family_history_of_cancer: MyString
+  what_family_cancer: MyString
+  had_cancer: MyString
+  what_your_cancer: MyString
+  treatment_of_depression: MyString
+  memory_disease: MyString
+  jitters_that_impairs: MyString
+  treatment_for_blood_pressure: MyString
+  cholesterol_control: MyString
+  systolic_blood_pressure: 1
+  total_cholesterol: MyString
+  hdl: MyString
+  abdominal_circumference: MyString
+  smoker: MyString
+  cigarettes_quantity: 
+  many_years_smoked: 
+  minutes_of_physical_activity: MyString
+  active_sex_life: MyString
+  someone_to_look: MyString
+  who_needs_assistance: MyString

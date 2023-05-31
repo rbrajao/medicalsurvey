@@ -16,6 +16,13 @@
     <%= form.text_field :user_id %>
   </div>
 
+   <!-- Campos do usuário -->
+    <%= form.fields_for :user, patient.user do |user_fields| %>
+      Tipo de usuário <%= user_fields.text_field :role %>
+       Email: <%= user_fields.email_field :email %>
+      Senha: <%= user_fields.password_field :password %>
+    <% end %>
+  
   <div>
     <%= form.label :event_id, style: "display: block" %>
     <%= form.text_field :event_id %>

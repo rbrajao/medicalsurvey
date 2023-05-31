@@ -5,6 +5,8 @@ class PatientsController < ApplicationController
   # GET /patients or /patients.json
   def index
     @patients = Patient.all
+    
+
   end
 
   # GET /patients/1 or /patients/1.json
@@ -14,23 +16,31 @@ class PatientsController < ApplicationController
   # GET /patients/new
   def new
     @patient = Patient.new
+    @user = User.new
   end
 
   # GET /patients/1/edit
   def edit
+    
   end
 
   # POST /patients or /patients.json
   def create
-    @patient = Patient.new(patient_params)
+    
+    ActiveRecord::Base.transaction do
 
-    respond_to do |format|
-      if @patient.save
-        format.html { redirect_to patient_url(@patient), notice: "Patient was successfully created." }
-        format.json { render :show, status: :created, location: @patient }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @patient.errors, status: :unprocessable_entity }
+      @user = User.new(user_params)
+      @patient = Patient.new(patient_params)    
+      @patient.user = @user
+
+      respond_to do |format|
+        if @user.save && @patient.save
+          format.html { redirect_to patient_url(@patient), notice: "Patient was successfully created." }
+          format.json { render :show, status: :created, location: @patient }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @patient.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -67,5 +77,9 @@ class PatientsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def patient_params
       params.require(:patient).permit(:user_id, :event_id, :name, :birthday, :cpf, :status)
+    end
+
+    def user_params
+      params.require(:patient).require(:user).permit(:email, :role, :password)
     end
 end

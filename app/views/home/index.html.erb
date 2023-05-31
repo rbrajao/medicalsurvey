@@ -1,8 +1,14 @@
 <% if user_signed_in? %> 
  <div> Welcome <%= current_user.email %> / <%=current_user.created_at%> / <%=current_user.encrypted_password %></div> 
   <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+
+    <%= link_to "Clientes", organizations_path %> <br>
+     <%= link_to "Eventos", events_path %> <br>    
+     <%= link_to "Questionários", surveys_path %> <br>    
+     <%= link_to "Pacientes", patients_path %> <br>    
+
 <% else %>
   <%= button_to "Sign in", new_user_session_path %> 
 <% end %>
 
-<h1>chegou aqui ?? </h1>
+<h1>Esta será a página inicial aberta a qualquer pessoa</h1>
