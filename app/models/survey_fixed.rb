@@ -1,14 +1,11 @@
 class SurveyFixed < ApplicationRecord
-    belongs_to :patient
-    has_one :answer
-    accepts_nested_attributes_for :answer
 
     #Informações Gerais
     #birthday
-    enum sex: {sex_1: "Feminino", sex_2: "Masculino"}
-    enum selfPerception: { selfPerception_1: "Excelente", selfPerception_2: "Muito boa", selfPerception_3: "Boa", selfPerception_4: "Média", selfPerception_5: "Ruim" } 
-    enum nightAsPatient: { nightAsPatient_1: "Não, nenhuma vez", nightAsPatient_2: "Uma vez", nightAsPatient_3: "Duas ou três vezes", nightAsPatient_4: "Mais do que três vezes" } 
-    enum searchedDoctor: { searchedDoctor_1: "Nenhuma vez", searchedDoctor_2: "Uma vez", searchedDoctor_3: "Duas ou três vezes", searchedDoctor_4: "Quatro a seis vezes", searchedDoctor_5: "Mais do que seis vezes" } 
+    enum sex: {sex_f: "Feminino", sex_m: "Masculino"}
+    enum selfPerception: { selfPerception_e: "Excelente", selfPerception_mb: "Muito boa", selfPerception_b: "Boa", selfPerception_m: "Média", selfPerception_r: "Ruim" } 
+    enum nightAsPatient: { nightAsPatient_nnv: "Não, nenhuma vez", nightAsPatient_uv: "Uma vez", nightAsPatient_dt: "Duas ou três vezes", nightAsPatient_mt: "Mais do que três vezes" } 
+    enum searchedDoctor: { searchedDoctor_nv: "Nenhuma vez", searchedDoctor_uv: "Uma vez", searchedDoctor_dtv: "Duas ou três vezes", searchedDoctor_qsv: "Quatro a seis vezes", searchedDoctor_msv: "Mais do que seis vezes" } 
     enum painThatImpairs: { painThatImpairs_1: "Não tem dor", painThatImpairs_2: "Tem dor mas interfere pouco na realização de suas atividades", painThatImpairs_3: "Tem dor que interfere moderadamente na realização de suas atividades", painThatImpairs_4: "Tem dor que interfere intensamente na realização de suas atividades" } 
     # #enum usageProfile: {option1: "Nenhuma", option2: "Até quatro", option3: "Acima de cinco"}
     enum manyDailyMedications: {manyDailyMedications_1: "Nenhuma", manyDailyMedications_2: "Até quatro", manyDailyMedications_3: "Acima de cinco"}

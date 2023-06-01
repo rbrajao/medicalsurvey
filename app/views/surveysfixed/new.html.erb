@@ -1,14 +1,17 @@
-<%= form_with(model: @SurveyFixed) do |form| %>
+<%= form_with(model: @SurveyFixed, url: surveysfixed_path) do |form| %>
 
  Bem vindo ao seu questionário de saúde! Todas as informações abaixo são obrigatórias. Após terminar o preenchimento clique em Salvar.
  <br>
  <br>
   
-  <%= form.label "Sexo:" %>
-    <% SurveyFixed.sexes.each do |key, value| %>
-    <%= form.radio_button :sex, key, required: true %>
-    <%= form.label "sex_#{key}", value.humanize %>
-  <% end %>
+<%= form.fields_for :answer do |answer_fields| %>
+    <div>
+      <%= answer_fields.label "Sexo:" %>
+      <%= answer_fields.collection_radio_buttons :sex, SurveyFixed.sexes, :first, :last, required: true %>
+    </div>
+<%end%>
+
+
   <br>  
   <%= form.label "Em geral, você diria que sua saúde é:" %>
     <% SurveyFixed.selfPerceptions.each do |key, value| %>

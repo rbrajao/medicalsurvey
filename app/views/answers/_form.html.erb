@@ -1,0 +1,177 @@
+<%= form_with(model: answer) do |form| %>
+  <% if answer.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+
+      <ul>
+        <% answer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :patient_id, style: "display: block" %>
+    <%= form.text_field :patient_id %>
+  </div>
+
+  <div>
+    <%= form.label :birth_date, style: "display: block" %>
+    <%= form.date_field :birth_date %>
+  </div>
+
+  <div>
+    <%= form.label :sex, style: "display: block" %>
+    <%= form.text_field :sex %>
+  </div>
+
+  <div>
+    <%= form.label :self_perception, style: "display: block" %>
+    <%= form.text_field :self_perception %>
+  </div>
+
+  <div>
+    <%= form.label :night_as_patient, style: "display: block" %>
+    <%= form.text_field :night_as_patient %>
+  </div>
+
+  <div>
+    <%= form.label :searched_doctor, style: "display: block" %>
+    <%= form.text_field :searched_doctor %>
+  </div>
+
+  <div>
+    <%= form.label :pain_that_impairs, style: "display: block" %>
+    <%= form.text_field :pain_that_impairs %>
+  </div>
+
+  <div>
+    <%= form.label :usage_profile, style: "display: block" %>
+    <%= form.text_field :usage_profile %>
+  </div>
+
+  <div>
+    <%= form.label :many_daily_medications, style: "display: block" %>
+    <%= form.text_field :many_daily_medications %>
+  </div>
+
+  <div>
+    <%= form.label :have_diabetes, style: "display: block" %>
+    <%= form.text_field :have_diabetes %>
+  </div>
+
+  <div>
+    <%= form.label :glycated_hemoglobin, style: "display: block" %>
+    <%= form.text_field :glycated_hemoglobin %>
+  </div>
+
+  <div>
+    <%= form.label :heart_attack, style: "display: block" %>
+    <%= form.text_field :heart_attack %>
+  </div>
+
+  <div>
+    <%= form.label :family_history_of_cancer, style: "display: block" %>
+    <%= form.text_field :family_history_of_cancer %>
+  </div>
+
+  <div>
+    <%= form.label :what_family_cancer, style: "display: block" %>
+    <%= form.text_field :what_family_cancer %>
+  </div>
+
+  <div>
+    <%= form.label :had_cancer, style: "display: block" %>
+    <%= form.text_field :had_cancer %>
+  </div>
+
+  <div>
+    <%= form.label :what_your_cancer, style: "display: block" %>
+    <%= form.text_field :what_your_cancer %>
+  </div>
+
+  <div>
+    <%= form.label :treatment_of_depression, style: "display: block" %>
+    <%= form.text_field :treatment_of_depression %>
+  </div>
+
+  <div>
+    <%= form.label :memory_disease, style: "display: block" %>
+    <%= form.text_field :memory_disease %>
+  </div>
+
+  <div>
+    <%= form.label :jitters_that_impairs, style: "display: block" %>
+    <%= form.text_field :jitters_that_impairs %>
+  </div>
+
+  <div>
+    <%= form.label :treatment_for_blood_pressure, style: "display: block" %>
+    <%= form.text_field :treatment_for_blood_pressure %>
+  </div>
+
+  <div>
+    <%= form.label :cholesterol_control, style: "display: block" %>
+    <%= form.text_field :cholesterol_control %>
+  </div>
+
+  <div>
+    <%= form.label :systolic_blood_pressure, style: "display: block" %>
+    <%= form.number_field :systolic_blood_pressure %>
+  </div>
+
+  <div>
+    <%= form.label :total_cholesterol, style: "display: block" %>
+    <%= form.text_field :total_cholesterol %>
+  </div>
+
+  <div>
+    <%= form.label :hdl, style: "display: block" %>
+    <%= form.text_field :hdl %>
+  </div>
+
+  <div>
+    <%= form.label :abdominal_circumference, style: "display: block" %>
+    <%= form.text_field :abdominal_circumference %>
+  </div>
+
+  <div>
+    <%= form.label :smoker, style: "display: block" %>
+    <%= form.text_field :smoker %>
+  </div>
+
+  <div>
+    <%= form.label :cigarettes_quantity, style: "display: block" %>
+    <%= form.text_field :cigarettes_quantity %>
+  </div>
+
+  <div>
+    <%= form.label :many_years_smoked, style: "display: block" %>
+    <%= form.text_field :many_years_smoked %>
+  </div>
+
+  <div>
+    <%= form.label :minutes_of_physical_activity, style: "display: block" %>
+    <%= form.text_field :minutes_of_physical_activity %>
+  </div>
+
+  <div>
+    <%= form.label :active_sex_life, style: "display: block" %>
+    <%= form.text_field :active_sex_life %>
+  </div>
+
+  <div>
+    <%= form.label :someone_to_look, style: "display: block" %>
+    <%= form.text_field :someone_to_look %>
+  </div>
+
+  <div>
+    <%= form.label :who_needs_assistance, style: "display: block" %>
+    <%= form.text_field :who_needs_assistance %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
