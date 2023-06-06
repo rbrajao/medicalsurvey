@@ -84,6 +84,12 @@
   </div>
 
   <div>
+    <%= form.label "Qual o valor da sua pressão arterial sistólica? (o valor da pressão maior ou máxima) em mmHg", style: "display: block" %>
+    <%= form.text_field :systolic_blood_pressure, required: true %>
+  </div>
+
+
+  <div>
 
   <%= form.label "Qual o valor a sua última hemoglobina glicada?" %>
     <% Answer.glycated_hemoglobins.each do |key, value| %>
@@ -179,9 +185,9 @@
 
   <div>
     <%= form.label "Algum médico já te disse que você tem colesterol alto?" %>
-    <% Answer.systolic_blood_pressures.each do |key, value| %>
-    <%= form.radio_button :systolic_blood_pressure, key, required: true %>
-    <%= form.label "systolic_blood_pressure_#{key}", value.humanize %>
+    <% Answer.high_cholesterols.each do |key, value| %>
+    <%= form.radio_button :high_cholesterol, key, required: true %>
+    <%= form.label "high_cholesterol_#{key}", value.humanize %>
   <% end %>
 
   </div>
@@ -201,8 +207,14 @@
     <%= form.radio_button :hdl, key, required: true %>
     <%= form.label "hdl_#{key}", value.humanize %>
   <% end %>
-
   </div>
+
+  <div>
+    <%= form.label "Qual o seu peso e altura?", style: "display: block" %>
+    Altura: <%= form.text_field :bmi_height, required: true %> (m)
+    Peso: <%= form.text_field :bmi_weight, required: true %> (kg) 
+  </div>
+
 
   <div>
   <%= form.label "Qual a sua medida de circunferência abdominal? (medida realizada com uma fita métrica na altura do umbigo)" %>

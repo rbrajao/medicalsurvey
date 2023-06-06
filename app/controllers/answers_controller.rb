@@ -24,15 +24,18 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
 
-    respond_to do |format|
-      if @answer.save
-        format.html { redirect_to answer_url(@answer), notice: "Answer was successfully created." }
-        format.json { render :show, status: :created, location: @answer }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
-      end
-    end
+    score = @answer.CalculateScore(answer_params)
+    puts score
+
+    # respond_to do |format|
+    #   if @answer.save
+    #     format.html { redirect_to answer_url(@answer), notice: "Answer was successfully created." }
+    #     format.json { render :show, status: :created, location: @answer }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @answer.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /answers/1 or /answers/1.json
@@ -66,6 +69,6 @@ class AnswersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def answer_params
-      params.require(:answer).permit(:patient_id, :birth_date, :sex, :self_perception, :night_as_patient, :searched_doctor, :pain_that_impairs, :usage_profile, :many_daily_medications, :have_diabetes, :glycated_hemoglobin, :heart_attack, :family_history_of_cancer, :what_family_cancer, :had_cancer, :what_your_cancer, :treatment_of_depression, :memory_disease, :jitters_that_impairs, :treatment_for_blood_pressure, :cholesterol_control, :systolic_blood_pressure, :total_cholesterol, :hdl, :abdominal_circumference, :smoker, :cigarettes_quantity, :many_years_smoked, :minutes_of_physical_activity, :active_sex_life, :someone_to_look, :who_needs_assistance)
+      params.require(:answer).permit(:patient_id, :birth_date, :sex, :self_perception, :night_as_patient, :searched_doctor, :pain_that_impairs, :usage_profile, :many_daily_medications, :have_diabetes, :glycated_hemoglobin, :heart_attack, :family_history_of_cancer, :what_family_cancer, :had_cancer, :what_your_cancer, :treatment_of_depression, :memory_disease, :jitters_that_impairs, :treatment_for_blood_pressure, :cholesterol_control, :systolic_blood_pressure, :total_cholesterol, :hdl, :abdominal_circumference, :smoker, :cigarettes_quantity, :many_years_smoked, :minutes_of_physical_activity, :active_sex_life, :someone_to_look, :who_needs_assistance, :high_cholesterol, :bmi_height, :bmi_weight)
     end
 end

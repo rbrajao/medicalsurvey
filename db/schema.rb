@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_124154) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_232646) do
   create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "patient_id", null: false
     t.date "birth_date"
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_124154) do
     t.string "who_needs_assistance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "bmi_height"
+    t.float "bmi_weight"
     t.index ["patient_id"], name: "index_answers_on_patient_id"
   end
 
