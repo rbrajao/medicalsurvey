@@ -48,14 +48,157 @@ class Answer < ApplicationRecord
     validates :sex, presence: true
     validates :self_perception, presence: true
 
-    
-    def CalculateScore(question_params)
+
+    def CalculateAge(date_birth)
+      
+      #calculate the age of the pacient
+      age = ((Date.today - Date.parse(date_birth) )/365.24).to_i
+      return age
+    end
+
+    #Hospitalization calculation
+    def CalculateHospitalizationScore(question_params)
+
+      #initial value
+      bx = -1.802
+
+      #calculate the age of the pacient
+      age = CalculateAge(question_params[:birth_date])
+
+      #verify self perception
+      self_perception_map = {
+        "Excelente" => 0,
+        "MuitoBoa" => 0.327,
+        "Boa" => 0.340,
+        "Media" => 0.552,
+        "Ruim" => 0.77
+      }
+      bx += self_perception_map[self_perception]
+
+      #verify sex information
+      sex = question_params[:sex]
+      bx += 0.257 if sex == "Masculino"
+
+      #verify someone_to_look information
+      score_someone_to_look = question_params[:someone_to_look]
+      bx -= 0.738 if score_someone_to_look == "someone_to_look_nao"   
+
+      #verify searched_doctor
+      searched_doctor_map = {
+        "sd_NenhumaVez" => 0,
+        "sd_UmaVez" => 0,
+        "sd_DuasTresVezes" => 0,
+        "sd_QuatroSeisVezes" => 0, 
+        "sd_MaiSeisVezes" => 0.318
+      }
+      bx += searched_doctor_map[searched_doctor]
+
+      score_have_diabetes = question_params[:have_diabetes]
+      bx += 0.319 if score_have_diabetes == "Diabetes_Sim"
+
+      #verify heart_attack information
+      score_heartattack = question_params[:heart_attack]
+      bx += 0.390 if score_heartattack == "heart_attack_sim"
+
+
+      #verify night_as_pacient
+      night_as_patient_map = {
+        "UmaVez" => 0,
+        "DuasTresVezes" => 0, 
+        "MaisTresVezes" =>0,
+        "NenhumaVez" => 0.545
+      }
+      bx += night_as_patient_map[night_as_patient]
+
+      #check age
+      case
+      when age < 74
+        bx += 0
+
+      when age <=79
+        bx += 0.255
+
+      when age <= 84
+        bx += 0.327
+
+      else
+        bx += 0.559
+      end
+
+      #calculate the score 
+      ebx = Math.exp(bx) 
+      score_hospitalization = ebx  / (1 + ebx);
+
+      return score_hospitalization
+
+    end
+
+
+    def CalculateABVitaScore(question_params)
+
+      weightScore = 0
+      min_age = 20
+      
+      #calculate the age of the pacient
+      age = CalculateAge(question_params[:birth_date])
+
+      #check age range
+      if age > min_age 
+
+        case age
+        when 20..34
+          weightScore += 0
+        when 35..39
+          weightScore += -3
+        when 40..44
+          weightScore += 0
+        when 45..49
+          weightScore += 3
+        when 50..54
+          weightScore += 6
+        when 55..59
+          weightScore += 8
+        when 60..64
+          weightScore += 10
+        when 65..69
+          weightScore += 11
+        when 70..74
+          weightScore += 12
+        when 75..79
+          weightScore += 14
+        when 80..84
+          weightScore += 16
+        when 85..200
+          weightScore += 18
+        end
+
+        #smoker 
+        smoker_CIGARETTE_PACKS_SIZE = 20;
+        smoker_RESULT_MAX = 14;
+        smoker_WEIGHT_CIGARETTE_MAX = 3;
+        smoker_WEIGHT_CIGARETTE_MIN = 2;
+
+        smoker_result = (question_params[:cigarettes_quantity].to_d / smoker_CIGARETTE_PACKS_SIZE) * question_params[:many_years_smoked].to_d
+        weightScore += smoker_result > smoker_RESULT_MAX ? smoker_WEIGHT_CIGARETTE_MAX : smoker_WEIGHT_CIGARETTE_MIN
+
+        weightScore += CalculateInitialScore(question_params)
+        weightScore += CalculateDiabetesScore(question_params)
+        weightScore += CalculateCholesterolScore(question_params) #cholesterol, HDl, Glycade
+        weightScore += CalculateCardiacScore(question_params)
+
+        return weightScore
+
+      end
+
+    end
+
+
+    def CalculateInitialScore(question_params)
 
       score_final = 0
  
       #calculate the age of the pacient
-      age = ((Date.today - Date.parse(question_params[:birth_date]) )/365.24).to_i
-      #puts age
+      age = CalculateAge(question_params[:birth_date])
 
       #verify sex information
       sex = question_params[:sex]
@@ -195,7 +338,20 @@ class Answer < ApplicationRecord
     end
     score_final += score_systolic_blood_pressure
 
+    return score_final
 
+  end
+
+
+
+  def CalculateDiabetesScore(question_params)
+    
+    score_final = 0
+
+    #calculate the age of the pacient
+    age = CalculateAge(question_params[:birth_date])
+
+    
     #this.bmiWeight / (this.bmiHeight * this.bmiHeight);
     score_height = question_params[:bmi_height].gsub(",", ".").to_f
     score_weight = question_params[:bmi_weight].gsub(",", ".").to_f
@@ -217,8 +373,7 @@ class Answer < ApplicationRecord
       score_bmi_value = "BMI_NORMAL"
     end
 
-  
-
+    puts score_bmi_value
 
     ############################ DIABETES QUESTIONS ###############################
     score_have_diabetes = question_params[:have_diabetes]
@@ -282,8 +437,14 @@ class Answer < ApplicationRecord
 
     end   
     
+    return score_final
     
-    ############################ CHOLESTEROL QUESTIONS ###############################
+  end
+
+  def CalculateCholesterolScore(question_params)
+    
+    score_final = 0
+
     score_cholesterol_control = question_params[:cholesterol_control]
     hdl_map = {
       "hdl_menor40" => 2,
@@ -325,10 +486,525 @@ class Answer < ApplicationRecord
     end
     score_final += glycated_hemoglobin_map[glycated_hemoglobin]
 
-
-
     return score_final
+
+  end
+
+  def CalculateCardiacScore(question_params)
+    
+    cardio_max_value = 24
+    cardio_score = 0
+    min_age = 20
+    max_age = 79
+
+    #return gender information
+    gender = question_params[:sex] # Masculino
+
+    #cholesterol question(yes or no) 
+    score_cholesterol_control = question_params[:cholesterol_control] # cholesterol_control_sim
+
+    #calculate the age of the pacient
+    age = CalculateAge(question_params[:birth_date])
+
+    #check age range
+    if age >= min_age && age <= max_age  
+
+       case age
+       when 20..34
+        
+        if gender == "Masculino"
+          #age
+          cardio_score += -9
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 4,
+            "tc_entre200_239" => 7,
+            "tc_entre240_279" => 9,
+            "tc_maior280" => 11, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 11 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += -7
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 4,
+            "tc_entre200_239" => 8,
+            "tc_entre240_279" => 13,
+            "tc_maior280" => 13, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 13 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+
+        end
+
+       when 35..39
+
+        if gender == "Masculino"
+          #age
+          cardio_score += -4
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 4,
+            "tc_entre200_239" => 7,
+            "tc_entre240_279" => 9,
+            "tc_maior280" => 11, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 11 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += -3
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 4,
+            "tc_entre200_239" => 8,
+            "tc_entre240_279" => 13,
+            "tc_maior280" => 13, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 13 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+
+        end
+
+       when 40..44
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 0
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 3,
+            "tc_entre200_239" => 5,
+            "tc_entre240_279" => 6,
+            "tc_maior280" => 8, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 8 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 0
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 3,
+            "tc_entre200_239" => 6,
+            "tc_entre240_279" => 10,
+            "tc_maior280" => 10, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 10 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+
+        end
+
+       when 45..49
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 3
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 3,
+            "tc_entre200_239" => 5,
+            "tc_entre240_279" => 6,
+            "tc_maior280" => 8, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 8 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 3
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 3,
+            "tc_entre200_239" => 6,
+            "tc_entre240_279" => 10,
+            "tc_maior280" => 10, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 10 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end
+
+       when 50..54
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 6
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 2,
+            "tc_entre200_239" => 3,
+            "tc_entre240_279" => 4,
+            "tc_maior280" => 5, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 5 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 6
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 2,
+            "tc_entre200_239" => 4,
+            "tc_entre240_279" => 7,
+            "tc_maior280" => 7, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 7 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+
+        end
+
+       when 55..59
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 8
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 2,
+            "tc_entre200_239" => 3,
+            "tc_entre240_279" => 4,
+            "tc_maior280" => 5, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 5 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 8
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 2,
+            "tc_entre200_239" => 4,
+            "tc_entre240_279" => 7,
+            "tc_maior280" => 7, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 7 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end 
+
+
+       when 60..64
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 10
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 1,
+            "tc_entre240_279" => 2,
+            "tc_maior280" => 3, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 3 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 10
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 2,
+            "tc_entre240_279" => 4,
+            "tc_maior280" => 4, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 4 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end 
+
+
+       when 65..69
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 11
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 1,
+            "tc_entre240_279" => 2,
+            "tc_maior280" => 3, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 3 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 12
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 1,
+            "tc_entre240_279" => 2,
+            "tc_maior280" => 3, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 3 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end 
+
+
+
+       when 70..74
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 12
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 0,
+            "tc_entre200_239" => 0,
+            "tc_entre240_279" => 1,
+            "tc_maior280" => 1, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 1 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 14
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 1,
+            "tc_entre240_279" => 2,
+            "tc_maior280" => 2, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 2 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end 
+
+
+        
+       when 75..79
+
+        if gender == "Masculino"
+          #age
+          cardio_score += 13
+
+           ## total cholesterol
+           cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 0,
+            "tc_entre200_239" => 0,
+            "tc_entre240_279" => 1,
+            "tc_maior280" => 1, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 1 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+          
+        else #feminino
+          #age
+          cardio_score += 16
+
+          ## total cholesterol
+          cardio_total_cholesterol_map = {
+            "tc_menor160" => 0,
+            "tc_entre160_199" => 1,
+            "tc_entre200_239" => 1,
+            "tc_entre240_279" => 2,
+            "tc_maior280" => 2, 
+            "tc_naosei" => score_cholesterol_control == "cholesterol_control_sim" ? 2 : 0
+          }
+          cardio_score += cardio_total_cholesterol_map[total_cholesterol]
+        end 
+
+
+      else #case
+        cardio_score +=0 #checar quando mais velho q 80 anos     
+      end
+
+
+      #HDL - cardiac calculate
+      #score_cholesterol_control = question_params[:cholesterol_control]
+      cardio_hdl_map = {
+        "hdl_menor40" => 2,
+        "hdl_entre40_49" => 1,
+        "hdl_entre50_59" => 0,
+        "hdl_maior60" => -2,
+        "hdl_naosei" => 0
+      }
+        
+      if score_cholesterol_control == "cholesterol_control_sim"
+        cardio_hdl_map["hdl_naosei"] = 2
+      end
+      cardio_score += cardio_hdl_map[hdl]
+
+
+      #systolic blood pressure control
+      case question_params[:systolic_blood_pressure].to_i
+      when 0...120
+        cardio_score += gender == "Masculino" ? 0 : 0
+      when 121..129
+        cardio_score += gender == "Masculino" ? 2 : 1
+      when 130..139
+        cardio_score += gender == "Masculino" ? 1 : 2
+      when 140..159
+        cardio_score += gender == "Masculino" ? 1 : 2
+      else
+        cardio_score += gender == "Masculino" ? 2 : 3 
+      end
+
+      #smoker - cardio
+      case age
+      when 20..34
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 8 : 9) : 0
+         
+      when 35..39
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 8 : 9) : 0
+
+      when 40..44
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 5 : 7) : 0
+
+      when 45..49
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 5 : 7) : 0
+
+      when 50..54
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 3 : 4) : 0
+
+      when 55..59
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 3 : 4) : 0
+
+      when 60..64
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 1 : 2) : 0
+
+      when 65..69
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 1 : 2) : 0
+
+      when 70..74
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 1 : 1) : 0
+
+      when 75..79
+        cardio_score += (smoker == "smoker_fumante") ? (gender == "Masculino" ? 1 : 1) : 0
+      end
+
+      #% score
+      cardio_max_score_man = 16
+      cardio_max_score_woman = 24
+      cardio_min_score_woman = 9
+      cardio_percent = ""
+
+      if gender == "Masculino"
+        if cardio_score < 0 
+          cardio_percent = "< 1%"
+        elsif cardio_score > cardio_max_score_man
+          cardio_percent = "> 30%"
+        end
+      else
+        if cardio_score < cardio_min_score_woman
+          cardio_percent = "< 1%"
+        elsif cardio_score > cardio_max_score_woman
+          cardio_percent = "> 30%"
+        end
+      end
+
+      if cardio_percent == ""
+
+        case cardio_score
+        when 0
+          cardio_percent =  "1%"
+        when 1
+          cardio_percent = "1%"
+        when 2
+          cardio_percent = "1%"
+        when 3
+          cardio_percent = "1%"
+        when 4
+          cardio_percent = "1%"
+        when 5
+          cardio_percent = "2%"
+        when 6
+          cardio_percent = "2%"
+        when 7
+          cardio_percent = "3%"
+        when 8
+          cardio_percent = "4%"
+        when 9
+          cardio_percent = gender == "Masculino" ? "5%" : "1%" 
+        when 10
+          cardio_percent = gender == "Masculino" ? "6%" : "1%" 
+        when 11
+          cardio_percent = gender == "Masculino" ? "8%" : "1%" 
+        when 12
+          cardio_percent = gender == "Masculino" ? "10%" : "1%" 
+        when 13
+          cardio_percent = gender == "Masculino" ? "12%" : "2%" 
+        when 14
+          cardio_percent = gender == "Masculino" ? "16%" : "2%" 
+        when 15
+          cardio_percent = gender == "Masculino" ? "20%" : "3%" 
+        when 16
+          cardio_percent = gender == "Masculino" ? "25%" : "4%" 
+        when 17
+          cardio_percent = gender == "Masculino" ? "" : "5%" 
+        when 18
+          cardio_percent = gender == "Masculino" ? "" : "6%" 
+        when 19
+          cardio_percent = gender == "Masculino" ? "" : "8%" 
+        when 20
+          cardio_percent = gender == "Masculino" ? "" : "11%" 
+        when 21
+          cardio_percent = gender == "Masculino" ? "" : "14%" 
+        when 22
+          cardio_percent = gender == "Masculino" ? "" : "17%"
+        when 23
+          cardio_percent = gender == "Masculino" ? "" : "22%"  
+        when 24
+          cardio_percent = gender == "Masculino" ? "" : "27%" 
+        end 
+      end
+
+      #puts cardio_percent
+      return cardio_score
+      
+    else
+
+      #idade menor que 20 - não tem questionário valido.             
 
     end
 
+    return cardio_score
+
+  end
 end

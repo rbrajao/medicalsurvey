@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_05_232646) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_204812) do
   create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "patient_id", null: false
     t.date "birth_date"
@@ -48,6 +48,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_232646) do
     t.datetime "updated_at", null: false
     t.float "bmi_height"
     t.float "bmi_weight"
+    t.integer "age"
+    t.string "bmi_classification"
+    t.float "bmi_value"
+    t.float "initial_score"
+    t.float "hospitalization_score"
+    t.float "abvita_score"
+    t.float "cardio_score"
+    t.float "final_score"
+    t.string "hospitalization_classification"
+    t.string "abvita_classification"
+    t.string "cardio_classification"
+    t.string "final_classification"
     t.index ["patient_id"], name: "index_answers_on_patient_id"
   end
 
