@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_organization, only: %i[ show edit update new ]
+
   before_action :authenticate_user!
 
   # GET /events or /events.json
@@ -67,5 +69,9 @@ class EventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_params
       params.require(:event).permit(:survey_id, :organization_id, :name, :date_init, :date_end, :acessurl, :status)
+    end
+
+    def set_organization
+      @organizations = Organization.all
     end
 end

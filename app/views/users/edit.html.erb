@@ -14,7 +14,7 @@
 
   <div class="field">
     <%= form.label :role %>
-    <%= form.text_field :role %>
+    <%= form.select :role, options_for_select(User.roles.map { |role| [role.humanize, role] }), {}, class: "form-control" %>
   </div>
 
   <div class="field">

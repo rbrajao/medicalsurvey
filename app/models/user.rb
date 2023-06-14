@@ -12,4 +12,8 @@ class User < ApplicationRecord
   scope :nurses, -> { where(role: 'nurse') }
   scope :patients, -> { where(role: 'patient') }
 
+  def self.roles
+    ['admin', 'doctor', 'nurse', 'patient']
+  end
+
 end
