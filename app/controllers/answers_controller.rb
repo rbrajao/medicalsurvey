@@ -24,68 +24,73 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
 
-    initial = @answer.CalculateInitialScore(answer_params)
-    puts "Inicial: #{initial}" 
+    @answer.initial_score = @answer.CalculateInitialScore(answer_params)
+    puts "Inicial: #{@answer.initial_score}" 
 
     #calculate age of the patient
-    age = @answer.CalculateAge(answer_params[:birth_date])
-    puts age
+    @answer.age = @answer.CalculateAge(answer_params[:birth_date])
+    puts "Idade: #{@answer.age}"
 
     ################# hospitalization ###############################
-    hospitalization = @answer.CalculateHospitalizationScore(answer_params)
-    puts "Hospitalização: #{hospitalization}" 
+    @answer.hospitalization_score = @answer.CalculateHospitalizationScore(answer_params)
+    puts "Hospitalização SCORE: #{@answer.hospitalization_score}" 
     case 
-    when hospitalization < 0.3
-      puts "Hospitalização baixa"
-    when hospitalization < 0.4
-      puts "Hospitalização intermediária"
-    when hospitalization < 0.5
-      puts "Hospitalização Intermediária alta"
+    when @answer.hospitalization_score < 0.3
+      @answer.hospitalization_classification = "Hospitalização baixa"
+    when @answer.hospitalization_score < 0.4
+      @answer.hospitalization_classification = "Hospitalização intermediária"
+    when @answer.hospitalization_score < 0.5
+      @answer.hospitalization_classification = "Hospitalização Intermediária alta"
     else
-      puts "Hospitalização alta"
+      @answer.hospitalization_classification = "Hospitalização alta"
     end
+    puts "Hospitalização CLASS: #{@answer.hospitalization_classification}"
 
 
     ################# ABVita ###############################
-    abvita = @answer.CalculateABVitaScore(answer_params)
-    puts "ABVitaScore: #{abvita}" 
+    @answer.abvita_score = @answer.CalculateABVitaScore(answer_params)
+    puts "ABVitaScore: #{@answer.abvita_score}" 
     case 
-    when abvita > 50
-      puts "Indice abvita alto"
-    when abvita >=36
-      puts "Indice abvita intermediário - alto"
-    when abvita >= 17
-      puts "Indice abvita Intermediário"
+    when @answer.abvita_score > 50
+      @answer.abvita_classification = "Indice abvita alto"
+    when @answer.abvita_score >=36
+      @answer.abvita_classification = "Indice abvita intermediário - alto"
+    when @answer.abvita_score >= 17
+      @answer.abvita_classification = "Indice abvita Intermediário"
     else
-      puts "Indice abvita baixo"
+      @answer.abvita_classification = "Indice abvita baixo"
     end
+    puts "ABVIta Class: #{@answer.abvita_classification}"
 
     ################# Cardio ###############################
-    cardio = @answer.CalculateCardiacScore(answer_params)
-    puts "Cardio: #{cardio}" 
+    @answer.cardio_score = @answer.CalculateCardiacScore(answer_params)
+    puts "Cardio: #{@answer.cardio_score}" 
     
     case 
-    when cardio < 10
-      puts "Risco cardiovascular baixo"
-    when cardio > 20
-      puts "Risco cardiovascular alto"
+    when @answer.cardio_score < 10
+      @answer.cardio_classification = "Risco cardiovascular baixo"
+    when @answer.cardio_score > 20
+      @answer.cardio_classification =  "Risco cardiovascular alto"
     else
-      puts "Risco cardiovascular intermediário"
+      @answer.cardio_classification =  "Risco cardiovascular intermediário"
     end
+    puts "Cardio Class: #{@answer.cardio_classification}"
 
     ################# Final Score ###############################
     case
-    when abvita > 50 || cardio > 20 || hospitalization >= 0.5
-      puts "Risco geral alto"
-    when abvita >= 36 || hospitalization > 0.4
-      puts "Risco geral intermediário alto"
-    when abvita >= 17 || cardio > 10 || hospitalization >= 0.3
-      puts "Risco geral intermediário"
-    when abvita + cardio > 20 + hospitalization == 0
-      puts "Idade insuficiente"
+    when @answer.abvita_score > 50 || @answer.cardio_score > 20 || @answer.hospitalization_score >= 0.5
+      @answer.final_classification = "Risco geral alto"
+    when @answer.abvita_score >= 36 || @answer.hospitalization_score > 0.4
+      @answer.final_classification = "Risco geral intermediário alto"
+    when @answer.abvita_score >= 17 || @answer.cardio_score > 10 || @answer.hospitalization_score >= 0.3
+      @answer.final_classification = "Risco geral intermediário"
+    when @answer.abvita_score + @answer.cardio_score > 20 + @answer.hospitalization_score == 0
+      @answer.final_classification = "Idade insuficiente"
     else
-      puts "Risco geral baixo"
+      @answer.final_classification = "Risco geral baixo"
     end
+
+    puts "Final score: #{@answer.final_classification}"
 
     # respond_to do |format|
     #   if @answer.save

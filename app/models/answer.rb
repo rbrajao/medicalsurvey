@@ -1005,6 +1005,5 @@ class Answer < ApplicationRecord
     end
 
     return cardio_score
-
   end
 end
