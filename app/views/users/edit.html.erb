@@ -32,6 +32,11 @@
     <%= form.password_field :password_confirmation %>
   </div>
 
+    <div class="field">
+    <%= form.label :status %>
+    <%= form.check_box :status %>
+  </div>
+
   <div class="actions">
     <%= form.submit "Update User" %>
   </div>
