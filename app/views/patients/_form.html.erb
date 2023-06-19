@@ -18,15 +18,32 @@
 
    <!-- Campos do usuário -->
     <%= form.fields_for :user, patient.user do |user_fields| %>
-      Tipo de usuário <%= user_fields.text_field :role %>
+       <%= user_fields.hidden_field :role, value: "patient" %>
        Email: <%= user_fields.email_field :email %>
       Senha: <%= user_fields.password_field :password %>
     <% end %>
-  
+
+  <%if patient.event.blank?%>
+
+
   <div>
     <%= form.label :event_id, style: "display: block" %>
-    <%= form.text_field :event_id %>
+    <%= form.collection_select(:event_id, @events, :id, :name) %>
   </div>
+
+  <%else%>
+      <div>
+        <%= form.label "Cliente: #{patient.event.organization.name}", style: "display: block" %>
+      </div>
+
+       <div>
+        <%= form.label "Cliente: #{patient.event.name}", style: "display: block" %>
+      </div>
+  <%end%>
+
+
+
+
 
   <div>
     <%= form.label :name, style: "display: block" %>

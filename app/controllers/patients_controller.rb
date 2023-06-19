@@ -1,12 +1,20 @@
 class PatientsController < ApplicationController
   before_action :set_patient, only: %i[ show edit update destroy ]
+  before_action :set_event, only: %i[ show edit update destroy new index ]
+  before_action :set_organization, only: %i[ show edit update new ]
+
   before_action :authenticate_user!
 
   # GET /patients or /patients.json
   def index
-    @patients = Patient.all
-    
-
+      if params[:event_id].present?
+        
+        @event = Event.find(params[:event_id])
+        @patients = @event.patients
+      else
+        @patients = Patient.all
+      end
+  
   end
 
   # GET /patients/1 or /patients/1.json
@@ -80,6 +88,18 @@ class PatientsController < ApplicationController
     end
 
     def user_params
-      params.require(:patient).require(:user).permit(:email, :role, :password)
+      params.require(:patient).require(:user).permit(:user, :email, :role, :password)
+    end
+
+    # def organization_params
+    #   params.require(:patient).require(:event).require(:organization).permit(:organization_id)
+    # end
+
+    def set_organization
+      @organizations = Organization.all
+    end
+
+    def set_event
+      @events = Event.all
     end
 end

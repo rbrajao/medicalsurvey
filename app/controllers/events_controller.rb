@@ -60,6 +60,34 @@ class EventsController < ApplicationController
     end
   end
 
+
+  #####import patients
+  def import_patients
+    csv_file = params[:event][:csv_file]
+    event_id = params[:event][:event_id]
+    
+    # Faça a leitura e o processamento do arquivo CSV aqui
+    # Você pode usar uma biblioteca como 'csv' para facilitar a leitura e o processamento
+
+    # Exemplo de código para processar o arquivo CSV
+    require 'csv'
+
+    CSV.foreach(csv_file.path, headers: true) do |row|
+      nome = row['Nome do Paciente']
+      data_nascimento = row['Data de Nascimento']
+      cpf = row['CPF']
+      sexo = row['Sexo']
+
+      # Crie uma instância de Patient associada ao evento
+      patient = Patient.new(nome: nome, data_nascimento: data_nascimento, cpf: cpf, sexo: sexo)
+      patient.event_id = event_id
+      patient.save
+    end
+
+    # Redirecione ou exiba uma mensagem de sucesso após o processamento do arquivo
+    redirect_to event_path(event_id), notice: 'Lista de pacientes importada com sucesso.'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

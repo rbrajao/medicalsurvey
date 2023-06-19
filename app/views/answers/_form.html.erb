@@ -11,13 +11,8 @@
     </div>
   <% end %>
 
-  Paciente NOME 
+  Paciente: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %>
   <br>
-
-  <div>
-    <%= form.label :patient_id, style: "display: block" %>
-    <%= form.text_field :patient_id %>
-  </div>
 
   <div>
     <%= form.label "Data de nascimento:", style: "display: block" %>

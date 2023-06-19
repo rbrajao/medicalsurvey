@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   resources :surveys
   resources :organizations
 
+  resources :events do
+    post :import_patients, on: :collection
+  end
+
   devise_for :users
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,6 +17,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   root :to => "home#index"
   get '/users', to: 'users#index'
+  get '/advice', to: 'answers#advice', as: 'advice'
 
 
 

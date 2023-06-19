@@ -1,0 +1,19 @@
+
+
+{{patient.name}} ({{patient.age}} anos)
+Médico:
+<br><br>
+Risco de internação hospitalar:
+{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}
+<br><br>
+{{pathologyName(advice.pathology)}}
+Risco de evento cardiovascular em 10 anos:
+{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}
+<br><br>
+Risco AbVita:
+{{riskMessage(patient.totalScoreLevel)}}
+<br><br>
+Exames/Metas<br><br>
+Equipe multiprofissional<br><br>
+Aconselhamento<br><br>
+Apenas se surgir demanda<br><br>

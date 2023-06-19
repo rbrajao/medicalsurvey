@@ -5,6 +5,9 @@ class AnswersController < ApplicationController
   # GET /answers or /answers.json
   def index
     @answers = Answer.all
+
+
+
   end
 
   # GET /answers/1 or /answers/1.json
@@ -13,6 +16,14 @@ class AnswersController < ApplicationController
 
   # GET /answers/new
   def new
+    if current_user.role == "patient" && current_user.patient.answers.present?
+
+      redirect_to advice_path(id: current_user.patient.id), notice: "Questionário já preenchido!"
+      puts "entrou no if"
+    else
+      puts "else"
+    end
+
     @answer = Answer.new
   end
 
@@ -92,22 +103,24 @@ class AnswersController < ApplicationController
 
     puts "Final score: #{@answer.final_classification}"
 
-    # respond_to do |format|
-    #   if @answer.save
-    #     format.html { redirect_to answer_url(@answer), notice: "Answer was successfully created." }
-    #     format.json { render :show, status: :created, location: @answer }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @answer.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    respond_to do |format|
+      if @answer.save
+        #format.html { redirect_to answer_url(@answer), notice: "Obrigado por preencher o questionário!" }
+        format.html { redirect_to advice_path(id: @answer.patient_id), notice: "Obrigado por preencher o questionário!" }
+        format.json { render :show, status: :created, location: @answer }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @answer.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /answers/1 or /answers/1.json
   def update
     respond_to do |format|
       if @answer.update(answer_params)
-        format.html { redirect_to answer_url(@answer), notice: "Answer was successfully updated." }
+        #format.html { redirect_to answer_url(@answer), notice: "Answer was successfully updated." }
+        format.html { redirect_to advice_path(id: @answer.patient_id), notice: "Obrigado por preencher o questionário!" }
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -124,6 +137,27 @@ class AnswersController < ApplicationController
       format.html { redirect_to answers_url, notice: "Answer was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def advice
+    @patient = Patient.find(params[:id])
+    # Lógica adicional para obter as informações necessárias para a página de aconselhamentos
+    puts "chegou aqui"
+    # Renderize a página de aconselhamentos (aconselhamentos.html.erb)
+  end
+  
+  def advice
+    
+    @advice_check = Answer.find(params[:id])
+    puts @advice_check.patient.user_id
+    puts current_user.id
+
+    # Verifica se o ID pertence ao usuário autenticado
+    if current_user.role == "patient" && (@advice_check.patient.user_id != current_user.id)
+      # Redireciona ou exibe uma mensagem de erro, conforme necessário
+      redirect_to root_path, alert: "Acesso não autorizado."
+    end
+
   end
 
   private

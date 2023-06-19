@@ -2,8 +2,14 @@
 
 <%= render "form", event: @event %>
 
-<br>
-
+<br><br>
+Importar a lista de pacientes:
+<%= form_with(url: import_patients_events_path, method: :post, multipart: true) do |form| %>
+  <%= form.hidden_field :event_id, value: @event.id %>
+  <%= form.file_field :csv_file %>
+  <%= form.submit 'Enviar' %>
+<% end %>
+<br><br>
 <div>
   <%= link_to "Show this event", @event %> |
   <%= link_to "Back to events", events_path %>

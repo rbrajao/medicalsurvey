@@ -1,16 +1,78 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Patients</h1>
+<h1>Pacientes</h1>
+
+<%= form_tag patients_path, method: :get do %>
+  <%= label_tag 'Evento' %>
+  <%= select_tag 'event_id', options_from_collection_for_select(@events, 'id', 'name'), prompt: 'Selecione o evento', class: 'event-select' %>
+
+  <%= submit_tag 'Buscar' %>
+<% end %>
+
 
 <div id="patients">
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Event</th>
+      <th>Name</th>
+      <th>Aniversário</th>
+      <th>CPF</th>
+      <th>Status</th>
+      <th>Preencheu o questionário?</th>
+      <th>Actions</th> <!-- Nova coluna para ações -->
+    </tr>
+  </thead>
+  <tbody>
+
   <% @patients.each do |patient| %>
     <%= render patient %>
-    <p>
-      <%= link_to "Show this patient", patient %>
-    </p>
   <% end %>
-</div>
 
+</table>
+
+</div>
 <%= link_to "New patient", new_patient_path %>
 <br>
 <%= link_to "Home", root_path %>  
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var eventSelect = document.querySelector('.event-select');
+  var patientsList = document.getElementById('patients-list');
+
+  // Restaurar o valor selecionado do evento
+  if (localStorage.getItem('selectedEvent')) {
+    eventSelect.value = localStorage.getItem('selectedEvent');
+  }
+
+  eventSelect.addEventListener('change', function() {
+    var eventId = this.value;
+    if (eventId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/patients?event_id=' + eventId);
+      xhr.responseType = 'script';
+      xhr.onload = function() {
+        console.log('Patients filtered successfully.');
+
+        // Persistir o valor selecionado do evento
+        localStorage.setItem('selectedEvent', eventId);
+      };
+      xhr.onerror = function() {
+        console.error('Failed to filter patients.');
+      };
+      xhr.send();
+    } else {
+      patientsList.innerHTML = '';
+
+      // Remover o valor selecionado do evento
+      localStorage.removeItem('selectedEvent');
+    }
+  });
+});
+
+
+</script>

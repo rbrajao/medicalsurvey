@@ -30,6 +30,9 @@ class UsersController < ApplicationController
       render :edit
     else
         @user.password = params[:user][:encrypted_password]
+        @user.status = params[:user][:status]
+        @user.role = params[:user][:role]
+        @user.email = params[:user][:email]
         @user.save(validate: false) # Salva as alterações sem validar a senha atual
         redirect_to users_path, notice: 'User updated successfully.'
     end
