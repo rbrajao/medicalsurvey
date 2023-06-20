@@ -75,7 +75,7 @@ class AnswersController < ApplicationController
 
     ################# Cardio ###############################
     @answer.cardio_score = @answer.CalculateCardiacScore(answer_params)
-    puts "Cardio: #{@answer.cardio_score}" 
+    puts "Cardio: #{@answer.cardio_score}"    
     
     case 
     when @answer.cardio_score < 10
