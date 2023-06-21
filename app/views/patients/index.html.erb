@@ -1,17 +1,20 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Pacientes</h1>
+<section class="section">
+  <h1 class="title">Listagem dos Pacientes</h1>
+  <h2 class="subtitle">
+    <br>
+      <%= form_tag patients_path, method: :get do %>
+        <%= label_tag 'Evento' %>
+        <%= select_tag 'event_id', options_from_collection_for_select(@events, 'id', 'name'), prompt: 'Selecione o evento', class: 'select' %>
 
-<%= form_tag patients_path, method: :get do %>
-  <%= label_tag 'Evento' %>
-  <%= select_tag 'event_id', options_from_collection_for_select(@events, 'id', 'name'), prompt: 'Selecione o evento', class: 'event-select' %>
-
-  <%= submit_tag 'Buscar' %>
-<% end %>
-
-
-<div id="patients">
-<table>
+        <%= submit_tag 'Buscar' %>
+      <% end %>
+  </h2>
+</section>
+<section class="section">
+ <div id="patients">
+<table class="table table is-bordered is-narrow is-hoverable is-fullwidth">
   <thead>
     <tr>
       <th>User</th>
@@ -29,10 +32,13 @@
   <% @patients.each do |patient| %>
     <%= render patient %>
   <% end %>
-
+  </tbody>
 </table>
 
 </div>
+
+</section>
+
 <%= link_to "New patient", new_patient_path %>
 <br>
 <%= link_to "Home", root_path %>  
@@ -41,7 +47,7 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-  var eventSelect = document.querySelector('.event-select');
+  var eventSelect = document.querySelector('.select');
   var patientsList = document.getElementById('patients-list');
 
   // Restaurar o valor selecionado do evento

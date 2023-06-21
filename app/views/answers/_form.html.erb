@@ -11,267 +11,501 @@
     </div>
   <% end %>
 
-  Paciente: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %>
-  <br>
+  <section class="section">
 
-  <div>
-    <%= form.label "Data de nascimento:", style: "display: block" %>
-    <%= form.date_field :birth_date %>
-  </div>
+    <article class="panel is-primary">
 
-  <div>
-  <%= form.label "Sexo:" %>
-    <% Answer.sexes.each do |key, value| %>
-    <%= form.radio_button :sex, key, required: true %>
-    <%= form.label "sex_#{key}", value.humanize %>
-  <% end %>
-  </div>
+      <p class="panel-heading">
+        Informações gerais
+      </p>
+        <br>
+        <div class="columns">
+          <div class="column p-5">Nome: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %></div>
+          <div class="column">Data de nascimento: <%= form.date_field :birth_date %></div>
+          <div class="column"> 
+              <%= form.label "Sexo:" %>
+                <% Answer.sexes.each do |key, value| %>
+                <%= form.radio_button :sex, key, required: true %>
+                <%= form.label "sex_#{key}", value.humanize %>
+              <% end %>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">
+              <%= form.label "Em geral, você diria que sua saúde é:" %>
+                <div class="columns">
+                  <% Answer.self_perceptions.each do |key, value| %>
+                    <div class="column p-5"> 
+                      <%= form.radio_button :self_perception, key, required: true %>
+                      <%= form.label "self_perception_#{key}", value.humanize %>
+                    </div>
+                <% end %>
+              </div>
+          </div>
+        </div>
 
-  <div>
-  <%= form.label "Em geral, você diria que sua saúde é:" %>
-    <% Answer.self_perceptions.each do |key, value| %>
-    <%= form.radio_button :self_perception, key, required: true %>
-    <%= form.label "self_perception_#{key}", value.humanize %>
-  <% end %>
-  </div>
+        <div class="columns">
+          <div class="column p-5">
+              <%= form.label "Nos últimos 12 meses você passou a noite como paciente de algum hospital? (considerar apenas quantas vezes ficou internado e vezes que passou a noite em observação):"%>
+                <div class="columns">
+                  <% Answer.night_as_patients.each do |key, value| %>
+                    <div class="column p-5"> 
+                      <%= form.radio_button :night_as_patient, key, required: true %>
+                      <%= form.label "snight_as_patient_#{key}", value.humanize %>
+                    </div>
+                <% end %>
+              </div>
+          </div>
+        </div>
 
-  <div>
-  <%= form.label "Nos últimos 12 meses você passou a noite como paciente de algum hospital? (considerar apenas quantas vezes ficou internado e vezes que passou a noite em observação)" %>
-    <% Answer.night_as_patients.each do |key, value| %>
-    <%= form.radio_button :night_as_patient, key, required: true %>
-    <%= form.label "snight_as_patient_#{key}", value.humanize %>
-  <% end %>
+        <div class="columns">
+          <div class="column p-5">
+              <%= form.label "Nos últimos 12 meses, quantas vezes você procurou o médico ou uma clínica para tratamento? (considerar número de vezes que passou em consulta ou idas ao Pronto Socorro)" %>
+                <div class="columns">
+                  <% Answer.searched_doctors.each do |key, value| %>
+                    <div class="column p-5"> 
+                      <%= form.radio_button :searched_doctor, key, required: true %>
+                      <%= form.label "searched_doctor_#{key}", value.humanize %>
+                    </div>
+                <% end %>
+              </div>
+          </div>
+        </div>
 
-  </div>
+        <div class="columns">
+          <div class="column p-5">
+              <%= form.label "Sente alguma dor que interfira ou prejudique a realização das suas atividades de vida ou no desempenho do trabalho?"  %>
+                <div class="columns">
+                  <% Answer.pain_that_impairs.each do |key, value| %>
+                    <div class="column p-5"> 
+                          <%= form.radio_button :pain_that_impairs, key, required: true %>
+                          <%= form.label "pain_that_impairs_#{key}", value.humanize %>
+                    </div>
+                <% end %>
+              </div>
+          </div>
+        </div>
+      
+      
+          <div class="columns">
+            <div class="column p-5">
+                <%= form.label "No momento atual, você toma quantas medicações diferentes para tratamento de doenças (incluir o uso de vitaminas)?"  %>
+                  <div class="columns">
+                    <% Answer.many_daily_medications.each do |key, value| %>
+                      <div class="column p-5"> 
+                        <%= form.radio_button :many_daily_medications, key, required: true %>
+                        <%= form.label "many_daily_medications_#{key}", value.humanize %>
+                      </div>
+                  <% end %>
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <div>
-  <%= form.label "Nos últimos 12 meses, quantas vezes você procurou o médico ou uma clínica para tratamento? (considerar número de vezes que passou em consulta ou idas ao Pronto Socorro)" %>
-    <% Answer.searched_doctors.each do |key, value| %>
-    <%= form.radio_button :searched_doctor, key, required: true %>
-    <%= form.label "searched_doctor_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Sente alguma dor que interfira ou prejudique a realização das suas atividades de vida ou no desempenho do trabalho?" %>
-    <% Answer.pain_that_impairs.each do |key, value| %>
-    <%= form.radio_button :pain_that_impairs, key, required: true %>
-    <%= form.label "pain_that_impairs_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-   <%= form.label "No momento atual, você toma quantas medicações diferentes para tratamento de doenças? (incluir o uso de vitaminas)" %>
-    <% Answer.many_daily_medications.each do |key, value| %>
-    <%= form.radio_button :many_daily_medications, key, required: true %>
-    <%= form.label "many_daily_medications_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-
-  <%= form.label "Algum médico já te disse que você tem diabetes? (há mais de 12 meses?)" %>
-    <% Answer.have_diabetes.each do |key, value| %>
-    <%= form.radio_button :have_diabetes, key, required: true %>
-    <%= form.label "have_diabetes_#{key}", value.humanize %>
-  <% end %>
-
-  </div>
-
-  <div>
-    <%= form.label "Qual o valor da sua pressão arterial sistólica? (o valor da pressão maior ou máxima) em mmHg", style: "display: block" %>
-    <%= form.text_field :systolic_blood_pressure, required: true %>
-  </div>
-
-
-  <div>
-
-  <%= form.label "Qual o valor a sua última hemoglobina glicada?" %>
-    <% Answer.glycated_hemoglobins.each do |key, value| %>
-    <%= form.radio_button :glycated_hemoglobin, key, required: true %>
-    <%= form.label "glycated_hemoglobin_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-
-  <%= form.label "Você alguma vez já teve doença do coração? Angina? Infarto do miocárdio? Ataque do coração?" %>
-    <% Answer.heart_attacks.each do |key, value| %>
-    <%= form.radio_button :heart_attack, key, required: true %>
-    <%= form.label "heart_attack_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-
-  <%= form.label "Você tem alguém na sua família (pais, irmãos) com história de câncer? (história familiar de neoplasia?)" %>
-    <% Answer.family_history_of_cancers.each do |key, value| %>
-    <%= form.radio_button :family_history_of_cancer, key, required: true %>
-    <%= form.label "family_history_of_cancer_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Qual?" %>
-    <% Answer.what_family_cancers.each do |key, value| %>
-    <%= form.radio_button :what_family_cancer, key, required: true %>
-    <%= form.label "what_family_cancer_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Você alguma vez já teve o diagnóstico de algum tipo de câncer, excluindo câncer de pele? (história pessoal de neoplasia?)" %>
-    <% Answer.had_cancers.each do |key, value| %>
-    <%= form.radio_button :had_cancer, key, required: true %>
-    <%= form.label "had_cancer_#{key}", value.humanize %>
-  <% end %>
-
-  </div>
-
-  <div>
-  <%= form.label "Qual?" %>
-    <% Answer.what_your_cancers.each do |key, value| %>
-    <%= form.radio_button :what_your_cancer, key, required: true %>
-    <%= form.label "what_your_cancer_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Você trata ou já tratou alguma vez de depressão?" %>
-    <% Answer.treatment_of_depressions.each do |key, value| %>
-    <%= form.radio_button :treatment_of_depression, key, required: true %>
-    <%= form.label "treatment_of_depression_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Você já teve alguma vez o diagnóstico de alguma doença de memória feito por algum médico?" %>
-    <% Answer.memory_diseases.each do |key, value| %>
-    <%= form.radio_button :memory_disease, key, required: true %>
-    <%= form.label "memory_disease_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Você se sente estressado ou nervoso(a)? Quanto esse estresse ou nervosismo interferem negativamente na realização das atividades ou do trabalho?" %>
-    <% Answer.jitters_that_impairs.each do |key, value| %>
-    <%= form.radio_button :jitters_that_impairs, key, required: true %>
-    <%= form.label "jitters_that_impairs_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Algum médico já te disse que você tem pressão alta?" %>
-    <% Answer.treatment_for_blood_pressures.each do |key, value| %>
-    <%= form.radio_button :treatment_for_blood_pressure, key, required: true %>
-    <%= form.label "treatment_for_blood_pressure_#{key}", value.humanize %>
-  <% end %>
-
-  </div>
-
-  <div>
-      <%= form.label "Qual o valor da sua pressão arterial sistólica?" %>
-    <% Answer.cholesterol_controls.each do |key, value| %>
-    <%= form.radio_button :cholesterol_control, key, required: true %>
-    <%= form.label "cholesterol_control_#{key}", value.humanize %>
-  <% end %>
-
-  </div>
-
-  <div>
-    <%= form.label "Algum médico já te disse que você tem colesterol alto?" %>
-    <% Answer.high_cholesterols.each do |key, value| %>
-    <%= form.radio_button :high_cholesterol, key, required: true %>
-    <%= form.label "high_cholesterol_#{key}", value.humanize %>
-  <% end %>
-
-  </div>
-
-  <div>
-
-  <%= form.label "Qual a dosagem mais recente do seu colesterol total?" %>
-    <% Answer.total_cholesterols.each do |key, value| %>
-    <%= form.radio_button :total_cholesterol, key, required: true %>
-    <%= form.label "total_cholesterol_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-  <%= form.label "Qual a dosagem mais recente do seu colesterol HDL? (o colesterol bom)" %>
-    <% Answer.hdls.each do |key, value| %>
-    <%= form.radio_button :hdl, key, required: true %>
-    <%= form.label "hdl_#{key}", value.humanize %>
-  <% end %>
-  </div>
-
-  <div>
-    <%= form.label "Qual o seu peso e altura?", style: "display: block" %>
-    Altura: <%= form.text_field :bmi_height, required: true %> (m)
-    Peso: <%= form.text_field :bmi_weight, required: true %> (kg) 
-  </div>
+    </article>
 
 
-  <div>
-  <%= form.label "Qual a sua medida de circunferência abdominal? (medida realizada com uma fita métrica na altura do umbigo)" %>
-    <% Answer.abdominal_circumferences.each do |key, value| %>
-    <%= form.radio_button :abdominal_circumference, key, required: true %>
-    <%= form.label "abdominal_circumference_#{key}", value.humanize %>
-  <% end %>
-  </div>
+    <section class="section">
 
-  <div>
-  <%= form.label "Quanto ao hábito de fumar, você:" %>
-    <% Answer.smokers.each do |key, value| %>
-    <%= form.radio_button :smoker, key, required: true %>
-    <%= form.label "smoker_#{key}", value.humanize %>
-  <% end %>
+      <article class="panel is-primary">
 
-  </div>
+            <p class="panel-heading">
+              Histórico de patologias
+            </p>
+              <br>
 
-  <div>
-    <%= form.label :cigarettes_quantity, style: "display: block" %>
-    <%= form.text_field :cigarettes_quantity %>
-  </div>
+            <div class="columns">
+              <div class="column p-5">
+                  <%= form.label "Algum médico já te disse que você tem diabetes? (há mais de 12 meses?):" %>
+                    <div class="columns">
+                      <% Answer.have_diabetes.each do |key, value| %>
+                        <div class="column p-5"> 
+                          <%= form.radio_button :have_diabetes, key, required: true %>
+                          <%= form.label "have_diabetes_#{key}", value.humanize %>          
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
 
-  <div>
-    <%= form.label :many_years_smoked, style: "display: block" %>
-    <%= form.text_field :many_years_smoked %>
-  </div>
+            <div class="columns">
+              <div class="column p-5">
+                  <%= form.label "Qual o valor a sua última hemoglobina glicada?" %>
+                    <div class="columns">
+                      <% Answer.glycated_hemoglobins.each do |key, value| %>
+                        <div class="column p-5"> 
+                          <%= form.radio_button :glycated_hemoglobin, key, required: true %>
+                          <%= form.label "glycated_hemoglobin_#{key}", value.humanize %>  
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
 
-  <div>
-  <%= form.label "Quantos minutos de atividade física você realiza em 1 semana? (considerar a soma dos minutos de toda atividade física que você realiza)" %>
-    <% Answer.minutes_of_physical_activities.each do |key, value| %>
-    <%= form.radio_button :minutes_of_physical_activity, key, required: true %>
-    <%= form.label "minutes_of_physical_activity_#{key}", value.humanize %>
-  <% end %>
+            <div class="columns">
+              <div class="column p-5">
+                  <%= form.label "Você alguma vez já teve doença do coração? Angina? Infarto do miocárdio? Ataque do coração?" %>
+                    <div class="columns">
+                      <% Answer.heart_attacks.each do |key, value| %>
+                        <div class="column p-5"> 
+                          <%= form.radio_button :heart_attack, key, required: true %>
+                          <%= form.label "heart_attack_#{key}", value.humanize %>
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
 
-  </div>
+            <div class="columns">
+              <div class="column p-5">
+                  <%= form.label "Você tem alguém na sua família (pais, irmãos) com história de câncer? (história familiar de neoplasia?):" %>
+                    <div class="columns">
+                      <% Answer.family_history_of_cancers.each do |key, value| %>
+                        <div class="column p-5"> 
+                          <%= form.radio_button :family_history_of_cancer, key, required: true, onclick: "showAlert('#{value}','family-cancer')" %>
+                          <%= form.label "family_history_of_cancer_#{key}", value.humanize %>
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
 
-  <div>
-  <%= form.label "Você tem vida sexual ativa, ou seja, relações com um parceiro ou parceira sexual?" %>
-    <% Answer.active_sex_lives.each do |key, value| %>
-    <%= form.radio_button :active_sex_life, key, required: true %>
-    <%= form.label "active_sex_life_#{key}", value.humanize %>
-  <% end %>
-  </div>
+            <div id="family-cancer" style="display: none;">
+              <div class="columns">
+                <div class="column p-5">
+                    <%= form.label "Qual?" %>
+                      <div class="columns">
+                        <% Answer.what_family_cancers.each do |key, value| %>
+                          <div class="column p-5"> 
+                              <%= form.radio_button :what_family_cancer, key %>
+                              <%= form.label "what_family_cancer_#{key}", value.humanize %>
+                          </div>
+                      <% end %>
+                    </div>
+                </div>
+              </div>
+            </div>
 
-  <div>
-  <%= form.label "Você apresenta algum problema que requeira auxílio de outros para a realização de suas atividades do dia dia?" %>
-    <% Answer.someone_to_looks.each do |key, value| %>
-    <%= form.radio_button :someone_to_look, key, required: true %>
-    <%= form.label "someone_to_look_#{key}", value.humanize %>
-  <% end %>
-  </div>
+            <div class="columns">
+              <div class="column p-5">
+                  <%= form.label "Você alguma vez já teve o diagnóstico de algum tipo de câncer, excluindo câncer de pele? (história pessoal de neoplasia?)" %>
+                    <div class="columns">
+                      <% Answer.had_cancers.each do |key, value| %>
+                        <div class="column p-5"> 
+                            <%= form.radio_button :had_cancer, key, required: true, onclick: "showAlert('#{value}','your-cancer')" %>
+                            <%= form.label "had_cancer_#{key}", value.humanize %>
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
 
-  <div>
-    <%= form.label "Existe algum amigo, parente ou vizinho que poderia tomar conta de você por alguns dias se você precisar?" %>
-    <% Answer.who_needs_assistances.each do |key, value| %>
-    <%= form.radio_button :who_needs_assistance, key, required: true %>
-    <%= form.label "who_needs_assistance_#{key}", value.humanize %>
-  <% end %>
-  </div>
-<br>
-  <div>
-    <%= form.submit %>
-  </div>
+            <div id="your-cancer" style="display: none;">
+              <div class="columns">
+                <div class="column p-5">
+                      <%= form.label "Qual?" %>
+                        <div class="columns">
+                          <% Answer.what_your_cancers.each do |key, value| %>
+                            <div class="column p-5"> 
+                                <%= form.radio_button :what_your_cancer, key %>
+                                <%= form.label "what_your_cancer_#{key}", value.humanize %>
+                            </div>
+                        <% end %>
+                      </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      </article>
+   </section>
+  
+    <section class="section">
+
+       <article class="panel is-primary">
+
+      <p class="panel-heading">
+        Histórico neurológico
+      </p>
+        <br>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Você trata ou já tratou alguma vez de depressão?" %>
+            <div class="columns">
+              <% Answer.treatment_of_depressions.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :treatment_of_depression, key, required: true %>
+                  <%= form.label "treatment_of_depression_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Você já teve alguma vez o diagnóstico de alguma doença de memória feito por algum médico?" %>
+            <div class="columns">
+              <% Answer.memory_diseases.each do |key, value| %>
+                <div class="column p-5"> 
+                    <%= form.radio_button :memory_disease, key, required: true %>
+                    <%= form.label "memory_disease_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Você se sente estressado ou nervoso(a)? Quanto esse estresse ou nervosismo interferem negativamente na realização das atividades ou do trabalho?" %>
+            <div class="columns">
+              <% Answer.jitters_that_impairs.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :jitters_that_impairs, key, required: true %>
+                  <%= form.label "jitters_that_impairs_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+    </article>
+   </section>
+
+
+
+
+    <section class="section">
+
+      <article class="panel is-primary">
+
+        <p class="panel-heading">
+          Informações sobre a saúde
+        </p>
+          <br>
+
+   
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Algum médico já te disse que você tem pressão alta?" %>
+            <div class="columns">
+              <% Answer.treatment_for_blood_pressures.each do |key, value| %>
+                <div class="column p-5"> 
+                    <%= form.radio_button :treatment_for_blood_pressure, key, required: true %>
+                    <%= form.label "treatment_for_blood_pressure_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+         <%= form.label "Qual o valor da sua pressão arterial sistólica? (o valor da pressão maior ou máxima) em mmHg:" %> 
+         <%= form.text_field :systolic_blood_pressure, required: true %>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Algum médico já te disse que você tem colesterol alto?" %>
+            <div class="columns">
+              <% Answer.high_cholesterols.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :high_cholesterol, key, required: true %>
+                  <%= form.label "high_cholesterol_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Qual a dosagem mais recente do seu colesterol total?" %>
+            <div class="columns">
+              <% Answer.total_cholesterols.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :total_cholesterol, key, required: true %>
+                  <%= form.label "total_cholesterol_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Qual a dosagem mais recente do seu colesterol HDL? (o colesterol bom):" %>
+            <div class="columns">
+              <% Answer.hdls.each do |key, value| %>
+                <div class="column p-5"> 
+                    <%= form.radio_button :hdl, key, required: true %>
+                    <%= form.label "hdl_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+             Altura: <%= form.text_field :bmi_height, required: true %> (m)
+             Peso: <%= form.text_field :bmi_weight, required: true %> (kg) 
+      </div>
+    </div>
+
+     <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Qual a sua medida de circunferência abdominal? (medida realizada com uma fita métrica na altura do umbigo)" %>
+            <div class="columns">
+              <% Answer.abdominal_circumferences.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :abdominal_circumference, key, required: true %>
+                  <%= form.label "abdominal_circumference_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>   
+    </article>
+
+   </section>
+
+
+    <section class="section">
+
+       <article class="panel is-primary">
+
+        <p class="panel-heading">
+          Hábitos e comportamentos
+        </p>
+          <br>
+
+
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Quanto ao hábito de fumar, você:" %>
+            <div class="columns">
+              <% Answer.smokers.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :smoker, key, required: true %>
+                  <%= form.label "smoker_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>   
+
+    <div class="columns">
+      <div class="column p-5">
+             Quantos cigarros você fuma por dia?: <%= form.text_field :cigarettes_quantity %>
+             A quantos anos você fuma? : <%= form.text_field :many_years_smoked %>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Quantos minutos de atividade física você realiza em 1 semana? (considerar a soma dos minutos de toda atividade física que você realiza)" %>
+            <div class="columns">
+              <% Answer.minutes_of_physical_activities.each do |key, value| %>
+                <div class="column p-5"> 
+                    <%= form.radio_button :minutes_of_physical_activity, key, required: true %>
+                    <%= form.label "minutes_of_physical_activity_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>       
+
+    
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Você tem vida sexual ativa, ou seja, relações com um parceiro ou parceira sexual?" %>
+            <div class="columns">
+              <% Answer.active_sex_lives.each do |key, value| %>
+                <div class="column p-5"> 
+                    <%= form.radio_button :active_sex_life, key, required: true %>
+                    <%= form.label "active_sex_life_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>       
+    </article>
+   </section>
+
+
+
+    <section class="section">
+
+           <article class="panel is-primary">
+
+        <p class="panel-heading">
+          Informações específicas
+        </p>
+          <br>
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Você apresenta algum problema que requeira auxílio de outros para a realização de suas atividades do dia dia?"%>
+            <div class="columns">
+              <% Answer.someone_to_looks.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :someone_to_look, key, required: true %>
+                  <%= form.label "someone_to_look_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>    
+
+    <div class="columns">
+      <div class="column p-5">
+          <%= form.label "Existe algum amigo, parente ou vizinho que poderia tomar conta de você por alguns dias se você precisar?" %>
+            <div class="columns">
+              <% Answer.who_needs_assistances.each do |key, value| %>
+                <div class="column p-5"> 
+                  <%= form.radio_button :who_needs_assistance, key, required: true %>
+                  <%= form.label "who_needs_assistance_#{key}", value.humanize %>
+                </div>
+            <% end %>
+          </div>
+      </div>
+    </div>    
+</article>
+   </section>
+    <section class="section">
+      <div class="columns">
+        <div class="column">
+
+          <div class="actions">
+            <div class="has-text-centered">
+              <%= button_tag "Enviar a resposta", class: "button is-primary is-large", type: "submit" %>
+            </div>
+          </div>
+
+        </div>
+      </div>   
+  </section>
 <% end %>
+<script>
+  function showAlert(value, element) {
+    
+    //alert(value);
+    var targetElement = document.getElementById(element);
+    //alert(targetElement);
+    //alert(targetElement.style.display)
+
+    targetElement.style.display = 'none';
+    targetElement.querySelector('input[type="radio"]').required = false;
+    if (value==='Sim'){
+        targetElement.style.display = 'block';
+        targetElement.querySelector('input[type="radio"]').required = true;
+    }
+  }
+</script>

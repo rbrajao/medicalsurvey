@@ -1,19 +1,49 @@
+<section class="section">
+    <article class="panel is-primary">
+        <p class="panel-heading">
+        Aconselhamento
+        </p>
+        <br>
 
-
-{{patient.name}} ({{patient.age}} anos)
-Médico:
-<br><br>
-Risco de internação hospitalar:
-{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}
-<br><br>
-{{pathologyName(advice.pathology)}}
-Risco de evento cardiovascular em 10 anos:
-{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}
-<br><br>
-Risco AbVita:
-{{riskMessage(patient.totalScoreLevel)}}
-<br><br>
-Exames/Metas<br><br>
-Equipe multiprofissional<br><br>
-Aconselhamento<br><br>
-Apenas se surgir demanda<br><br>
+        <div class="columns">
+          <div class="column p-5">Nome: {{patient.name}} </div>
+          <div class="column p-5">Idade: ({{patient.age}} anos)</div>
+          <div class="column p-5">Sexo: </div>
+        </div>
+        <br>
+         <div class="columns">
+          <div class="column p-5">Risco de internação hospitalar: </div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}</div>
+          <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
+        </div>
+        <br>
+        <div class="columns">
+          <div class="column p-5">Risco de evento cardiovascular em 10 anos:</div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}</div>
+          <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
+        </div>
+        <br>
+        <div class="columns">
+          <div class="column p-5">Risco AbVita:</div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">{{riskMessage(patient.totalScoreLevel)}}</div>
+        </div>
+         <div class="columns">
+          <div class="column p-5">Exames/Metas</div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">Equipe multiprofissional</div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">Aconselhamento</div>
+        </div>
+        <div class="columns">
+          <div class="column p-5">Apenas se surgir demanda</div>
+        </div>
+    <article>
+</section>
