@@ -1,8 +1,11 @@
-<h1>  Bem vindo ao seu questionário de saúde! Todas as informações abaixo são obrigatórias. Após terminar o preenchimento clique em Salvar.</h1>
+<section class="section">
+  <h1 class="title">Bem vindo ao seu questionário de saúde!</h1>
+  <h2 class="subtitle">
+    Todas as informações abaixo são obrigatórias. Após terminar o preenchimento clique em ENVIAR A RESPOSTA.
+  </h2>
+</section>
 
 <%= render "form", answer: @answer %>
-
-<br>
 
 <div>
   <%= link_to "Back to answers", answers_path %>

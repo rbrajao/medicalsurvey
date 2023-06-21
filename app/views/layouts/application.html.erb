@@ -1,19 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Medicalsurvey</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <title>Medicalsurvey</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
-
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+  
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="<%= root_path %>">
+      <img src="/assets/logov1.png" width="112" height="28">
+    </a>
 
-    <%= yield %>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <% if user_signed_in? %> 
+ 
+    <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="<%= root_path %>">
+        Home
+      </a>
+
+      <a class="navbar-item" href=<%=organizations_path %> >
+        Clientes
+      </a>
+      <a class="navbar-item" href=<%=events_path %>>
+        Eventos
+      </a>
+      <a class="navbar-item" href=<%=users_path %>>
+        Usuários
+      </a>
+      <a class="navbar-item" href=<%=surveys_path %>>
+        Questionários - cadastro
+      </a>
+      <a class="navbar-item" href=<%=patients_path %>>
+        Pacientes
+      </a>
+      <a class="navbar-item" href=<%=answers_path %>>
+        Respostas
+      </a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+            <strong><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "button is-primary" %></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% else %>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+            <strong> <%= button_to "Sign in", new_user_session_path, class: "button is-primary" %> </strong>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</nav>
+<%= yield %>
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Contato: 11 00000.0000</strong> Email: a@a.com - by ABVita.
+    </p>
+  </div>
+</footer>
   </body>
+
 </html>

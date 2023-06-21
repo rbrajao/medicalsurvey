@@ -1,16 +1,23 @@
-<% if user_signed_in? %> 
- <div> Welcome <%= current_user.email %> / <%=current_user.created_at%> / <%=current_user.encrypted_password %></div> 
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+<section class="section">
+  <h1 class="title">Score ABVita</h1>
+  <h2 class="subtitle">
+          Com o preenchimento de um questionário simples e intuitivo os profissionais da área da saúde obtém a estratificação de risco de seus pacientes através do <strong>Score AbVita.</strong> isso possibilita que empresas, entidades governamentais e operadoras de saúde estabeleçam ações programáticas direcionadas, que permitem a gestão racional e efetiva dos recursos utilizados. A estratificação de risco é uma ferramenta poderosa, capaz de predizer a ocorrência de situações crônicas e de grandes eventos que causam um impacto profundo na qualidade de vida dos pacientes e nos custos envolvidos em seu tratamento. Através do <strong>Score AbVita</strong> os gestores têm acesso a informações preciosas para a tomada de decisões, profissionais de saúde têm acesso a indicação das alternativas de tratamento possíveis e os pacientes recebem orientações valiosas para o cuidado da saúde.
+  </h2>
+</section>
+<section class="section">
+  <h1 class="title">Vantagens para as empresas</h1>
+  <h2 class="subtitle">
+    Ao estratificar o risco de seus colaboradores as empresas que utilizam o <b>AbVita</b> obtém informações preciosas para o dimensionamento dos planos mais adequados aos perfis dos grupos identificados. Isso permite aos gestores a montagem de programas de saúde específicos para cada grupo, diminuindo o absenteísmo, aumentando a produtividade e gerando uma sensível redução nos custos. Além disso, as empresas recebem dados precisos sobre o perfil de risco de sua base.	Essas informações são utilizadas nas negociações com as operadoras para o dimensionamento da demanda estimada de suas carteiras por serviços de saúde, o que garante mais equilíbrio e assertividade nos acordos comerciais realizados.
+    </h2>
+</section>
+<section class="section">
+  <h1 class="title">Benefícios para os pacientes</h1>
+  <h2 class="subtitle">
+  	Através do <strong>AbVita</strong> o paciente se transforma em um participante efetivo no processo de controle de suas doenças. A conscientização sobre sua saúde, e dos eventuais riscos advindos do seu estilo de vida atual, permitem que o paciente compreenda as alternativas possíveis para a melhoria efetiva da sua qualidade de vida. O <strong>AbVita</strong> envia aos pacientes informações pontuais, de fácil compreensão e com grande objetividade, que são essenciais para o estabelecimento de um processo continuo de cuidado e atenção com as atitudes e hábitos saudáveis.
+  </h2>
+</section>
 
-    <%= link_to "Clientes", organizations_path %> <br>
-     <%= link_to "Eventos", events_path %> <br>    
-     <%= link_to "Questionários", surveys_path %> <br>    
-     <%= link_to "Pacientes", patients_path %> <br>    
-     <%= link_to "Answers", answers_path %> <br>    
-     <%= link_to "Usuários", users_path %> <br>    
 
-<% else %>
-  <%= button_to "Sign in", new_user_session_path %> 
-<% end %>
 
-<h1>Esta será a página inicial aberta a qualquer pessoa</h1>

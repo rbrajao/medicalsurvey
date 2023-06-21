@@ -279,7 +279,8 @@ class Answer < ApplicationRecord
       "tratogastointestinal" => 3,
       "Prostata" => 2,
       "Leucemia" => 2, 
-      "Outros" => 1
+      "Outros" => 1,
+      nil => 0
     }
     score_final += what_family_cancer_map[what_family_cancer]
 
@@ -309,7 +310,8 @@ class Answer < ApplicationRecord
       "y_tratogastointestinal" => 5,
       "y_prostata" => 3,
       "y_leucemia" => 4, 
-      "y_outros" => 3
+      "y_outros" => 3,
+      nil => 0
     }
     score_final += what_your_cancer_map[what_your_cancer]
 
