@@ -42,6 +42,13 @@ class AnswersController < ApplicationController
     @answer.age = @answer.CalculateAge(answer_params[:birth_date])
     puts "Idade: #{@answer.age}"
 
+    #BMI values
+    @answer.bmi_value = @answer.CalculateBMIValue(@answer.age, answer_params[:bmi_height], answer_params[:bmi_weight])
+    @answer.bmi_classification = @answer.CalculateBMIClassification(@answer.age, @answer.bmi_value)
+
+    puts "BMI value: #{@answer.bmi_value}"
+    puts "BMI Classification: #{@answer.bmi_classification}"
+
     ################# hospitalization ###############################
     @answer.hospitalization_score = @answer.CalculateHospitalizationScore(answer_params)
     puts "Hospitalização SCORE: #{@answer.hospitalization_score}" 
@@ -138,13 +145,6 @@ class AnswersController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def advice
-    @patient = Patient.find(params[:id])
-    # Lógica adicional para obter as informações necessárias para a página de aconselhamentos
-    puts "chegou aqui"
-    # Renderize a página de aconselhamentos (aconselhamentos.html.erb)
-  end
   
   def advice
     
@@ -157,6 +157,12 @@ class AnswersController < ApplicationController
       # Redireciona ou exibe uma mensagem de erro, conforme necessário
       redirect_to root_path, alert: "Acesso não autorizado."
     end
+
+    @patient = Patient.find(params[:id])
+    puts "chegou aqui"
+
+    @advice_patient = Advice.new
+    @advice_patient.generateAdvice(@patient, @advice_patient)
 
   end
 

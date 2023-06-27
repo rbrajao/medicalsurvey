@@ -56,6 +56,41 @@ class Answer < ApplicationRecord
       return age
     end
 
+
+    def CalculateBMIValue(age, height, weight)
+
+        #this.bmiWeight / (this.bmiHeight * this.bmiHeight);
+        score_height = height.gsub(",", ".").to_f
+        score_weight = weight.gsub(",", ".").to_f
+        score_bmi = score_weight / (score_height*score_height)
+        
+        return score_weight / (score_height * score_height)
+        
+    end
+
+    def CalculateBMIClassification(age, bmi)
+      
+      score_bmi_value = ""
+      
+      case 
+      when age>60 && bmi < 22
+        score_bmi_value = "BMI_LIGHTWEIGHT"
+      when age>60 && (bmi >=22 && bmi <= 27)
+        score_bmi_value = "BMI_EUTROPHIC"
+      when age>60 && bmi > 27
+        score_bmi_value = "BMI_OBESITY"
+      when age <= 60 && (bmi >=25 && bmi <= 30)
+        score_bmi_value = "BMI_OVERWEIGHT"
+      when age <= 60 && bmi > 30
+        score_bmi_value = "BMI_OBESITY"
+      when age <= 60 && bmi < 25
+        score_bmi_value = "BMI_NORMAL"
+      end
+
+      return score_bmi_value
+  end
+
+
     #Hospitalization calculation
     def CalculateHospitalizationScore(question_params)
 
@@ -64,6 +99,7 @@ class Answer < ApplicationRecord
 
       #calculate the age of the pacient
       age = CalculateAge(question_params[:birth_date])
+      question_params[:age] = age
 
       #verify self perception
       self_perception_map = {
@@ -374,6 +410,7 @@ class Answer < ApplicationRecord
     when age <= 60 && score_bmi < 25
       score_bmi_value = "BMI_NORMAL"
     end
+
 
     puts score_bmi_value
 
@@ -1008,4 +1045,159 @@ class Answer < ApplicationRecord
 
     return cardio_score
   end
+
+  def generateAdvice(question_params)
+
+    puts "chegou aqui??"
+
+    #verify diabetes information
+   adv_diabetes = question_params[:have_diabetes] === "Diabetes_Sim" ? "S" : "N"
+   #puts adv_diabetes
+
+   #verify smoker
+   smoker_map = {
+     "smoker_fumante" => 1,
+     "smoker_exfumante" => 1,
+     "smoker_exfumantemais20" => 0,
+     "smoker_nunca" => 0
+   }
+   adv_smoker = smoker_map[smoker]
+   #puts adv_smoker
+
+   #verify many_daily_medications
+   many_daily_medications_map = {
+     "Nenhuma" => 0,
+     "AteQuatro" => 1,
+     "AcimaCinco" => 1
+   }
+   adv_manyMedations = many_daily_medications_map[many_daily_medications]
+   #puts adv_manyMedations
+
+   #depression
+   adv_depression = question_params[:treatment_of_depression] === "treatment_of_depression_sim" ? "S" : "N"
+   #puts adv_depression
+
+   #verify sex information
+   adv_sex = question_params[:sex] === "Masculino"? "M" : "F"
+   #puts adv_sex
+
+   generateAdvicesForDoctorSearchAndNightAsPatients(question_params)
+   generateAdvicesCancer(question_params)
+   generateAdvicesObesity(question_params)
+   generateAdvicesHeartAttackAndBloodPressure(question_params)
+   generateAdvicesHighUtilizationOfHealthServices(question_params)
+
+ end
+
+ def generateAdvicesForDoctorSearchAndNightAsPatients(question_params)
+
+   #verify night_as_pacient
+   night_as_patient_map = {
+     "UmaVez" => 0,
+     "DuasTresVezes" => 1, 
+     "MaisTresVezes" =>1,
+     "NenhumaVez" => 0
+   }
+   adv_night_as_patient = night_as_patient_map[night_as_patient]
+   puts adv_night_as_patient
+
+   #verify searched_doctor
+   searched_doctor_map = {
+     "sd_NenhumaVez" => 0,
+     "sd_UmaVez" => 0,
+     "sd_DuasTresVezes" => 0,
+     "sd_QuatroSeisVezes" => 1, 
+     "sd_MaiSeisVezes" => 1
+   }
+   adv_searched_doctor = searched_doctor_map[searched_doctor]
+   puts adv_searched_doctor
+
+ end
+
+ def generateAdvicesCancer(question_params)
+    
+   #verify family_history_of_cancer information
+   adv_family_history_of_cancer = question_params[:family_history_of_cancer] === "family_history_of_cancer_sim" ? "S" : "N"
+
+   #verify had_cancer information
+   adv_had_cancer = question_params[:had_cancer] === "had_cancer_sim" ? "S" : "N"
+
+ end
+
+ def generateAdvicesObesity(question_params)
+
+   #this.bmiWeight / (this.bmiHeight * this.bmiHeight);
+   score_height = question_params[:bmi_height].gsub(",", ".").to_f
+   score_weight = question_params[:bmi_weight].gsub(",", ".").to_f
+   score_bmi = score_weight / (score_height*score_height)
+   score_bmi_value = ""
+   adv_bmi = 0
+   
+   case 
+   when age>60 && score_bmi < 22
+     score_bmi_value = "BMI_LIGHTWEIGHT"
+   when age>60 && (score_bmi >=22 && score_bmi <= 27)
+     score_bmi_value = "BMI_EUTROPHIC"
+   when age>60 && score_bmi > 27
+     score_bmi_value = "BMI_OBESITY"
+   when age <= 60 && (score_bmi >=25 && score_bmi <= 30)
+     score_bmi_value = "BMI_OVERWEIGHT"
+     adv_bmi = 1 
+   when age <= 60 && score_bmi > 30
+     score_bmi_value = "BMI_OBESITY"
+     adv_bmi = 1
+   when age <= 60 && score_bmi < 25
+     score_bmi_value = "BMI_NORMAL"
+   end
+   #puts adv_bmi
+
+   minutes_of_physical_activity_map = {
+     "minutes_of_physical_activity_nenhuma" => 1,
+     "minutes_of_physical_activity_menos150" => 1, 
+     "minutes_of_physical_activity_mais150" => 0
+   }
+   adv_minutes_of_physical_activity = minutes_of_physical_activity_map[minutes_of_physical_activity]
+   puts adv_minutes_of_physical_activity
+
+ end 
+
+ def generateAdvicesHeartAttackAndBloodPressure(question_params)
+
+   #verify heart_attack information
+   adv_heartattack = question_params[:heart_attack] === "heart_attack_sim" ? 1 : 0
+   adv_cholesterol_control = question_params[:cholesterol_control] === "cholesterol_control_sim" ? 1 : 0
+   adv_treatment_for_blood_pressure = question_params[:treatment_for_blood_pressure] === "treatment_for_blood_pressure_sim" ? 1 : 0
+
+ end
+
+ def generateAdvicesHighUtilizationOfHealthServices(question_params)
+
+   #verify night_as_pacient
+   night_as_patient_map = {
+     "UmaVez" => 0,
+     "DuasTresVezes" => 1, 
+     "MaisTresVezes" =>1,
+     "NenhumaVez" => 0
+   }
+   adv_night_as_patient = night_as_patient_map[night_as_patient]
+   #puts adv_night_as_patient
+
+   #verify searched_doctor
+   searched_doctor_map = {
+     "sd_NenhumaVez" => 0,
+     "sd_UmaVez" => 0,
+     "sd_DuasTresVezes" => 0,
+     "sd_QuatroSeisVezes" => 1, 
+     "sd_MaiSeisVezes" => 1
+   }
+   adv_searched_doctor = searched_doctor_map[searched_doctor]
+
+   #puts adv_night_as_patient
+   #puts adv_searched_doctor
+
+   if adv_night_as_patient + adv_searched_doctor = 2 
+     puts "S"
+   end
+ end
+
 end
