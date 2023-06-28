@@ -1,16 +1,35 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Events</h1>
+<section class="section">
+  <h1 class="title">Eventos / Campanhas de saúde</h1>
+</section>
+<section class="section">
+ <div id="events">
+    <table class="table table is-bordered is-narrow is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>Questionário</th>
+          <th>Cliente</th>
+          <th>Nome</th>
+          <th>Data início</th>
+          <th>Data fim</th>
+          <th>Status</th>
+          <th>Stats</th>
+          <th>Actions</th> <!-- Nova coluna para ações -->
+        </tr>
+      </thead>
+      <tbody>
 
-<div id="events">
-  <% @events.each do |event| %>
-    <%= render event %>
-    <p>
-      <%= link_to "Show this event", event %>
-    </p>
-  <% end %>
+        <% @events.each do |event| %>
+          <%= render event %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-</div>
+
+ <% # link_to "Show this event", event %>
 
 <%= link_to "New event", new_event_path %>
 <br>

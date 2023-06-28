@@ -1,37 +1,16 @@
 <div id="<%= dom_id event %>">
-  <p>
-    <strong>Survey:</strong>
-    <%= event.survey_id %>
-  </p>
-
-  <p>
-    <strong>Organization:</strong>
-    <%= event.organization.name %>
-  </p>
-
-  <p>
-    <strong>Name:</strong>
-    <%= event.name %>
-  </p>
-
-  <p>
-    <strong>Date init:</strong>
-    <%= event.date_init %>
-  </p>
-
-  <p>
-    <strong>Date end:</strong>
-    <%= event.date_end %>
-  </p>
-
-  <p>
-    <strong>Acessurl:</strong>
-    <%= event.acessurl %>
-  </p>
-
-  <p>
-    <strong>Status:</strong>
-    <%= event.status %>
-  </p>
+ <tr>
+      <td><%= event.survey_id %></td>
+      <td><%= event.organization.name %></td>
+      <td><%= event.name %></td>
+      <td><%= event.date_init %></td>
+      <td><%= event.date_end %></td>
+      <td><%= event.status %></td>
+      <td>(<%= event.patients.count%>) Total / (0) Preenchidos / (0) Falta Preencher </td>
+      <td>
+        <%= link_to 'Edit', edit_event_path(event) %> |
+        <%= link_to 'Delete', event_path(event), method: :delete, data: { confirm: 'Confirma a exclusão do evento?' } %>
+      </td>
+  </tr>
 
 </div>
