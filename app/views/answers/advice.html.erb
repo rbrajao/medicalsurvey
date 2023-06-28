@@ -3,47 +3,115 @@
         <p class="panel-heading">
         Aconselhamento
         </p>
-        <br>
+       
+        <section class="section">
+          <div class="content is-max-desktop">
+            <h1><%= @patient.name%>, <%= @advice_check.age %> anos</h1>
+          </div>
+          <br>
+           <section class="hero is-small <%=@color_hero_hospitalization%>">
+            <div class="hero-body">
+              <p class="title">
+                Risco de internação hospitalar
+              </p>
+              <p class="subtitle">
+                <%= @advice_check.hospitalization_classification %>
+              </p>
+            </div>
+          </section>
+          <br>
+           <section class="hero is-small <%=@color_hero_cardio%>">
+            <div class="hero-body">
+              <p class="title">
+                Risco de evento cardiovascular em 10 anos
+              </p>
+              <p class="subtitle">
+                <%= @advice_check.cardio_classification %>
+              </p>
+            </div>
+          </section>
+          <br>
+          <section class="hero is-small <%=@color_hero_abvita%>">
+            <div class="hero-body">
+              <p class="title">
+                Risco AbVita
+              </p>
+              <p class="subtitle">
+                <%= @advice_check.abvita_classification %>
+              </p>
+            </div>
+          </section>
+          <br>
+          <section class="hero is-small <%=@color_hero_final%>">
+            <div class="hero-body">
+              <p class="title">
+                Risco final
+              </p>
+              <p class="subtitle">
+                <%= @advice_check.final_classification %>
+              </p>
+            </div>
+          </section>
+          <br>
+           
+          <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Exames/Metas
+              </p>
+              <p class="subtitle">
+                
+              </p>
+            </div>
+          </section>
+          <br>
+          <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Equipe multiprofissional
+              </p>
+              <p class="subtitle">
+                
+              </p>
+            </div>
+          </section>
+          <br>
+           <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Aconselhamento
+              </p>
+              <p class="subtitle">
+                
+              </p>
+            </div>
+          </section>
+          <br>
+           <section class="hero is-small is-info">
+            <div class="hero-body">
+              <p class="title">
+                Apenas se surgir demanda
+              </p>
+              <p class="subtitle">
+                
+              </p>
+            </div>
+          </section>
+          <br>
 
-        <div class="columns">
-          <div class="column p-5">Nome: {{patient.name}} </div>
-          <div class="column p-5">Idade: ({{patient.age}} anos)</div>
-          <div class="column p-5">Sexo: </div>
-        </div>
-        <br>
-         <div class="columns">
-          <div class="column p-5">Risco de internação hospitalar: </div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}</div>
-          <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
-        </div>
-        <br>
-        <div class="columns">
-          <div class="column p-5">Risco de evento cardiovascular em 10 anos:</div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}</div>
-          <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
-        </div>
-        <br>
-        <div class="columns">
-          <div class="column p-5">Risco AbVita:</div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">{{riskMessage(patient.totalScoreLevel)}}</div>
-        </div>
-         <div class="columns">
-          <div class="column p-5">Exames/Metas</div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">Equipe multiprofissional</div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">Aconselhamento</div>
-        </div>
-        <div class="columns">
-          <div class="column p-5">Apenas se surgir demanda</div>
-        </div>
+
+            <div class="columns">
+              <div class="column p-5">{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}</div>
+              <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
+            </div>
+            <div class="columns">
+              <div class="column p-5">{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}</div>
+              <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
+            </div>
+
+            <div class="columns">
+              <div class="column p-5">{{riskMessage(patient.totalScoreLevel)}} </div>
+            </div>
+          </section>
     <article>
 </section>

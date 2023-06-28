@@ -1046,6 +1046,18 @@ class Answer < ApplicationRecord
     return cardio_score
   end
 
+
+
+
+
+
+
+
+
+
+
+
+  
   def generateAdvice(question_params)
 
     puts "chegou aqui??"
@@ -1113,6 +1125,11 @@ class Answer < ApplicationRecord
    puts adv_searched_doctor
 
  end
+
+
+
+
+
 
  def generateAdvicesCancer(question_params)
     

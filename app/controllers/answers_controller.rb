@@ -33,6 +33,7 @@ class AnswersController < ApplicationController
 
   # POST /answers or /answers.json
   def create
+    
     @answer = Answer.new(answer_params)
 
     @answer.initial_score = @answer.CalculateInitialScore(answer_params)
@@ -40,14 +41,10 @@ class AnswersController < ApplicationController
 
     #calculate age of the patient
     @answer.age = @answer.CalculateAge(answer_params[:birth_date])
-    puts "Idade: #{@answer.age}"
 
     #BMI values
     @answer.bmi_value = @answer.CalculateBMIValue(@answer.age, answer_params[:bmi_height], answer_params[:bmi_weight])
     @answer.bmi_classification = @answer.CalculateBMIClassification(@answer.age, @answer.bmi_value)
-
-    puts "BMI value: #{@answer.bmi_value}"
-    puts "BMI Classification: #{@answer.bmi_classification}"
 
     ################# hospitalization ###############################
     @answer.hospitalization_score = @answer.CalculateHospitalizationScore(answer_params)
@@ -112,6 +109,7 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.save
+
         #format.html { redirect_to answer_url(@answer), notice: "Obrigado por preencher o questionário!" }
         format.html { redirect_to advice_path(id: @answer.patient_id), notice: "Obrigado por preencher o questionário!" }
         format.json { render :show, status: :created, location: @answer }
@@ -146,11 +144,12 @@ class AnswersController < ApplicationController
     end
   end
   
+
   def advice
+    @patient = Patient.find(params[:id])
     
-    @advice_check = Answer.find(params[:id])
-    puts @advice_check.patient.user_id
-    puts current_user.id
+    #@advice_check = Answer.find(params[:id])
+    @advice_check = @patient.answers.last
 
     # Verifica se o ID pertence ao usuário autenticado
     if current_user.role == "patient" && (@advice_check.patient.user_id != current_user.id)
@@ -158,11 +157,55 @@ class AnswersController < ApplicationController
       redirect_to root_path, alert: "Acesso não autorizado."
     end
 
-    @patient = Patient.find(params[:id])
-    puts "chegou aqui"
-
+    
     @advice_patient = Advice.new
     @advice_patient.generateAdvice(@patient, @advice_patient)
+
+    @color_hero_hospitalization = "is-info"
+    case @advice_check.hospitalization_classification
+    when "Hospitalização baixa"
+      @color_hero_hospitalization = "is-success"
+    when "Hospitalização intermediária"
+      @color_hero_hospitalization = "is-warning"
+    when "Hospitalização Intermediária alta"
+      @color_hero_hospitalization = "is-warning"
+    else #"Hospitalização alta"
+      @color_hero_hospitalization = "is-danger"
+    end
+
+    @color_hero_abvita = "is-info"
+    case @advice_check.abvita_classification
+    when "Indice abvita alto"
+      @color_hero_abvita = "is-danger"
+    when "Indice abvita Intermediário"
+      @color_hero_abvita = "is-warning"
+    when "Indice abvita intermediário - alto"
+      @color_hero_abvita = "is-warning"
+    else #"Hospitalização alta"
+      @color_hero_abvita = "is-success"
+    end
+
+    @color_hero_cardio = "is-info"
+    case @advice_check.cardio_classification
+    when "Risco cardiovascular alto"
+      @color_hero_cardio = "is-danger"
+    when "Risco cardiovascular intermediário"
+      @color_hero_cardio = "is-warning"
+    else #"Hospitalização alta"
+      @color_hero_abvita = "is-success"
+    end
+
+    @color_hero_final = "is-info"
+    case @advice_check.final_classification
+    when "Risco geral alto"
+      @color_hero_final = "is-danger"
+    when "Risco geral intermediário"
+      @color_hero_final = "is-warning"
+    when "Risco geral intermediário alto"
+      @color_hero_final = "is-warning"
+    else #"Hospitalização alta"
+      @color_hero_final = "is-success"
+    end
 
   end
 

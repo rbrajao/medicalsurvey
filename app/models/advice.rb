@@ -1,15 +1,16 @@
 class Advice
     
-    attr_accessor :diabetes, :heart_disease, :smoker, :ex_smoker, :hypertension, :more_daily_medications, :treatment_of_depression, :family_history_of_cancer, :had_cancer, :little_physical_activity, :zero_physical_activity, :obesity, :dyslipidemia, :high_utilization_of_health_services, :man, :evaluate_causes_of_hospital_visits, :evaluate_risk_of_hospitalization, :evaluate_references_searches_of_doctors, :evaluate_the_specialties
+    attr_accessor :age, :diabetes, :heart_disease, :smoker, :ex_smoker, :hypertension, :more_daily_medications, :treatment_of_depression, :family_history_of_cancer, :had_cancer, :little_physical_activity, :zero_physical_activity, :obesity, :dyslipidemia, :high_utilization_of_health_services, :man, :evaluate_causes_of_hospital_visits, :evaluate_risk_of_hospitalization, :evaluate_references_searches_of_doctors, :evaluate_the_specialties
     attr_accessor :ab_vita_score, :hospitalization_score, :cardiac_score_final, :cardiac_percentage
 
      #def generateAdvice(question_params, advice)
     def generateAdvice(patient, advice_patient)
 
-        #search answers for the patient
-        answer_patient = Answer.find(patient.id)
+        #last answer for the patient
+        answer_patient = patient.answers.last
 
         #advice info
+        advice_patient.age = answer_patient.age
         advice_patient.diabetes = answer_patient.have_diabetes === "Diabetes_Sim" ? true : false
         advice_patient.smoker = answer_patient.smoker === "smoker_fumante" ? true : false
         advice_patient.ex_smoker = answer_patient.smoker === "smoker_exfumante" ? true : false
@@ -30,11 +31,29 @@ class Advice
         advice_patient.hypertension = answer_patient.treatment_for_blood_pressure === "treatment_for_blood_pressure_sim" ? true : false
         advice_patient.high_utilization_of_health_services =  ((advice_patient.evaluate_risk_of_hospitalization === true || advice_patient.evaluate_causes_of_hospital_visits === true) && (advice_patient.evaluate_references_searches_of_doctors===true || advice_patient.evaluate_the_specialties===true)) ? true : false
 
-        puts answer_patient.bmi_classification
-        puts answer_patient.heart_attack
-
-        puts "aconselhamento fim"
-
     end
+
+    def generateAdviceMessages(advice_patient)
+
+        msgAdviceSmoker = advice_patient.smoker === true ? "" : ""
+        msgAdviceExSmoker = advice_patient.ex_smoker === true ? "" : ""
+        msgAdviceMoreDailyBelow60 = (advice_patient.more_daily_medications===true && advice_patient.age <= 60) ? "" : ""
+        msgAdviceMoreDailyUp60 = (advice_patient.more_daily_medications===true && advice_patient.age > 60) ? "" : ""
+        msgAdviceTreatmentDepression = advice_patient.treatment_of_depression === true ? "" : ""
+        msgAdviceLittlePhysicalActivity = advice_patient.little_physical_activity === true ? "" : ""
+        msgAdviceZeroPhysicalActivity = advice_patient.zero_physical_activity === true ? "" : ""
+        msgAdviceHadCancer = advice_patient.had_cancer === true ? "" : ""
+        msgAdviceFamilyHistoryCancer = advice_patient.family_history_of_cancer  === true ? "" : ""
+        msgAdviceManAge70More = (advice_patient.man === true && advice_patient.age >= 70) ? "" : ""
+        msgAdviceManAge75More = (advice_patient.man === true && advice_patient.age >= 75) ? "" : ""
+        msgAdviceEvaluateCausesHospitalVisits = advice_patient.evaluate_causes_of_hospital_visits === true ? "" : ""
+        msgAdviceRiskHospitalization = advice_patient.evaluate_risk_of_hospitalization === true ? "" : ""
+        msgAdviceEvaluateSearchDoctors = advice_patient.evaluate_references_searches_of_doctors === true ? "" : ""
+        msgAdviceTheSpecialties = advice_patient.evaluate_the_specialties === true ? "" : ""
+        msgAdviceObesity = advice_patient.obesity === true ? "" : ""
+        msgAdviceHighHealthServices = advice_patient.high_utilization_of_health_services === true ? "" : ""
+ 
+    end
+
   end
   
