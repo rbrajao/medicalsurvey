@@ -1,22 +1,13 @@
 <div id="<%= dom_id organization %>">
-  <p>
-    <strong>Name:</strong>
-    <%= organization.name %>
-  </p>
-
-  <p>
-    <strong>Fantasyname:</strong>
-    <%= organization.fantasyname %>
-  </p>
-
-  <p>
-    <strong>Cnpj:</strong>
-    <%= organization.cnpj %>
-  </p>
-
-  <p>
-    <strong>Status:</strong>
-    <%= organization.status %>
-  </p>
-
+  
+ <tr>
+      <td><%= organization.name %></td>
+      <td><%= organization.fantasyname %></td>
+      <td><%= organization.cnpj %></td>
+      <td><%= organization.status %></td>
+      <td>
+        <%= link_to 'Editar', edit_organization_path(organization) %> |
+        <%= link_to 'Remover', organization_path(organization), method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+  </tr>
 </div>

@@ -1,8 +1,12 @@
-<h1>Usuários</h1>
-
-<table>
+<p style="color: green"><%= notice %></p>
+<section class="section">
+  <h1 class="title">Listagem dos usuários</h1>
+ 
+ <div id="users">
+<table class="table table is-bordered is-narrow is-hoverable is-fullwidth">
   <thead>
     <tr>
+      <th>id</th>
       <th>role</th>
       <th>Email</th>
       <th>Status</th>
@@ -10,18 +14,30 @@
     </tr>
   </thead>
   <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.role %></td>
-        <td><%= user.email %></td>
-         <td><%= user.status %></td>
-         <td>
-          <%= link_to 'Edit', edit_user_path(user) %> |
-          <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
-      </tr>
-    <% end %>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.role %></td>
+          <td><%= user.email %></td>
+          <td><%= user.status %></td>
+          <td>
+            <%= link_to 'Edit', edit_user_path(user) %> |
+            <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
   </tbody>
 </table>
+
+</div>
+
+</section>
 <br>
 <%= link_to "Home", root_path %>  
+
+
+
+
+
+
+

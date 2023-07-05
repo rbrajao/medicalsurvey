@@ -7,7 +7,6 @@ class User < ApplicationRecord
   
   has_one :patient
 
-
   def admin?
     role == 'admin'
   end

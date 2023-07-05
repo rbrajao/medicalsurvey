@@ -1,16 +1,31 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Organizations</h1>
-
-<div id="organizations">
-  <% @organizations.each do |organization| %>
-    <%= render organization %>
-    <p>
-      <%= link_to "Show this organization", organization %>
-    </p>
-  <% end %>
-</div>
-
+<section class="section">
+  <h1 class="title">Listagem dos clientes</h1>
+  <div id="organizations">
+    <table class="table table is-bordered is-narrow is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Nome Fantasia</th>
+          <th>CNPJ</th>
+          <th>Status</th>
+          <th>Actions</th> <!-- Nova coluna para ações -->
+        </tr>
+      </thead>
+      <tbody>
+        <% @organizations.each do |organization| %>
+          <%= render organization %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
 <%= link_to "New organization", new_organization_path %>
 <br>
 <%= link_to "Home", root_path %>  
+
+
+
+
+
