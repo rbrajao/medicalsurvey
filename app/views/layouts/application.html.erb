@@ -26,36 +26,34 @@
   </div>
 
   <% if user_signed_in? %> 
- 
-     <% if user_signed_in? %> 
-      
-     <%end %>
-
+    
     <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" href="<%= root_path %>">
-        Home
-      </a>
+      <% unless current_user.patient? %> 
+        <div class="navbar-start">
+          <a class="navbar-item" href="<%= root_path %>">
+            Home
+          </a>
 
-      <a class="navbar-item" href=<%=organizations_path %> >
-        Clientes
-      </a>
-      <a class="navbar-item" href=<%=events_path %>>
-        Eventos
-      </a>
-      <a class="navbar-item" href=<%=users_path %>>
-        Usuários
-      </a>
-      <a class="navbar-item" href=<%=surveys_path %>>
-        Questionários - cadastro
-      </a>
-      <a class="navbar-item" href=<%=patients_path %>>
-        Pacientes
-      </a>
-      <a class="navbar-item" href=<%=answers_path %>>
-        Respostas
-      </a>
-    </div>
+          <a class="navbar-item" href=<%=organizations_path %> >
+            Clientes
+          </a>
+          <a class="navbar-item" href=<%=events_path %>>
+            Eventos
+          </a>
+          <a class="navbar-item" href=<%=users_path %>>
+            Usuários
+          </a>
+          <a class="navbar-item" href=<%=surveys_path %>>
+            Questionários - cadastro
+          </a>
+          <a class="navbar-item" href=<%=patients_path %>>
+            Pacientes
+          </a>
+          <a class="navbar-item" href=<%=answers_path %>>
+            Respostas
+          </a>
+        </div>
+      <%end %>
 
     <div class="navbar-end">
       <div class="navbar-item">

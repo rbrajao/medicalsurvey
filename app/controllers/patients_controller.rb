@@ -2,7 +2,6 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: %i[ show edit update destroy ]
   before_action :set_event, only: %i[ show edit update destroy new index ]
   before_action :set_organization, only: %i[ show edit update new ]
-
   before_action :authenticate_user!
 
   # GET /patients or /patients.json

@@ -2,6 +2,14 @@
 
 <section class="section">
   <h1 class="title">Eventos / Campanhas de saúde</h1>
+  <h2 class="subtitle">
+    <br>
+      <%= form_tag events_path, method: :get do %>
+        <%= label_tag 'Clientes' %>
+        <%= select_tag 'organization_id', options_from_collection_for_select(@organizations, 'id', 'name'), prompt: 'Selecione', class: 'select' %>
+        <%= submit_tag 'Buscar' %>
+      <% end %>
+  </h2>
 </section>
 <section class="section">
  <div id="events">
@@ -34,3 +42,41 @@
 <%= link_to "New event", new_event_path %>
 <br>
 <%= link_to "Home", root_path %>  
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var eventSelect = document.querySelector('.select');
+  var patientsList = document.getElementById('events-list');
+
+  // Restaurar o valor selecionado do evento
+  if (localStorage.getItem('selectedEvent')) {
+    eventSelect.value = localStorage.getItem('selectedEvent');
+  }
+
+  eventSelect.addEventListener('change', function() {
+    var organizationId = this.value;
+    if (organizationId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/events?organization_id=' + organizationId);
+      xhr.responseType = 'script';
+      xhr.onload = function() {
+        console.log('Organizations filtered successfully.');
+
+        // Persistir o valor selecionado do evento
+        localStorage.setItem('selectedEvent', organizationId);
+      };
+      xhr.onerror = function() {
+        console.error('Failed to filter organizations.');
+      };
+      xhr.send();
+    } else {
+      patientsList.innerHTML = '';
+
+      // Remover o valor selecionado do evento
+      localStorage.removeItem('selectedEvent');
+    }
+  });
+});
+
+
+</script>

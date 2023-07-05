@@ -1,12 +1,27 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
-  before_action :set_organization, only: %i[ show edit update new ]
+  before_action :set_organization, only: %i[ show edit update new index]
 
   before_action :authenticate_user!
 
   # GET /events or /events.json
   def index
-    @events = Event.all 
+    
+    if params[:organization_id].present?
+      
+      @organization = Organization.find(params[:organization_id])
+      @events = @organization.events
+    else
+      @events = Event.all
+
+    end
+
+
+    # if current_user.admin?
+    #   @events = Event.all 
+    # else
+    #   @events = Event.all #alterar para trazer somente os eventos que forem respectivos dos enfermeiros e médicos 
+    # end
 
   end
 
