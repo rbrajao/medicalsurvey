@@ -6,8 +6,6 @@ class AnswersController < ApplicationController
   def index
     @answers = Answer.all
 
-
-
   end
 
   # GET /answers/1 or /answers/1.json
@@ -16,7 +14,10 @@ class AnswersController < ApplicationController
 
   # GET /answers/new
   def new
+
     if current_user.role == "patient" && current_user.patient.answers.present?
+
+      puts "nome do paciente: #{current_user.patient.name} "
 
       redirect_to advice_path(id: current_user.patient.id), notice: "Questionário já preenchido!"
       puts "entrou no if"
@@ -35,77 +36,78 @@ class AnswersController < ApplicationController
   def create
     
     @answer = Answer.new(answer_params)
+    @answer.calculate_scores(answer_params)
 
-    @answer.initial_score = @answer.CalculateInitialScore(answer_params)
-    puts "Inicial: #{@answer.initial_score}" 
+    # @answer.initial_score = @answer.CalculateInitialScore(answer_params)
+    # puts "Inicial: #{@answer.initial_score}" 
 
-    #calculate age of the patient
-    @answer.age = @answer.CalculateAge(answer_params[:birth_date])
+    # #calculate age of the patient
+    # @answer.age = @answer.CalculateAge(answer_params[:birth_date])
 
-    #BMI values
-    @answer.bmi_value = @answer.CalculateBMIValue(@answer.age, answer_params[:bmi_height], answer_params[:bmi_weight])
-    @answer.bmi_classification = @answer.CalculateBMIClassification(@answer.age, @answer.bmi_value)
+    # #BMI values
+    # @answer.bmi_value = @answer.CalculateBMIValue(@answer.age, answer_params[:bmi_height], answer_params[:bmi_weight])
+    # @answer.bmi_classification = @answer.CalculateBMIClassification(@answer.age, @answer.bmi_value)
 
-    ################# hospitalization ###############################
-    @answer.hospitalization_score = @answer.CalculateHospitalizationScore(answer_params)
-    puts "Hospitalização SCORE: #{@answer.hospitalization_score}" 
-    case 
-    when @answer.hospitalization_score < 0.3
-      @answer.hospitalization_classification = "Hospitalização baixa"
-    when @answer.hospitalization_score < 0.4
-      @answer.hospitalization_classification = "Hospitalização intermediária"
-    when @answer.hospitalization_score < 0.5
-      @answer.hospitalization_classification = "Hospitalização Intermediária alta"
-    else
-      @answer.hospitalization_classification = "Hospitalização alta"
-    end
-    puts "Hospitalização CLASS: #{@answer.hospitalization_classification}"
+    # ################# hospitalization ###############################
+    # @answer.hospitalization_score = @answer.CalculateHospitalizationScore(answer_params)
+    # puts "Hospitalização SCORE: #{@answer.hospitalization_score}" 
+    # case 
+    # when @answer.hospitalization_score < 0.3
+    #   @answer.hospitalization_classification = "LOW"
+    # when @answer.hospitalization_score < 0.4
+    #   @answer.hospitalization_classification = "INTERMEDIATE"
+    # when @answer.hospitalization_score < 0.5
+    #   @answer.hospitalization_classification = "INTERMEDIATE-HIGH"
+    # else
+    #   @answer.hospitalization_classification = "HIGH"
+    # end
+    # puts "Hospitalização CLASS: #{@answer.hospitalization_classification}"
 
 
-    ################# ABVita ###############################
-    @answer.abvita_score = @answer.CalculateABVitaScore(answer_params)
-    puts "ABVitaScore: #{@answer.abvita_score}" 
-    case 
-    when @answer.abvita_score > 50
-      @answer.abvita_classification = "Indice abvita alto"
-    when @answer.abvita_score >=36
-      @answer.abvita_classification = "Indice abvita intermediário - alto"
-    when @answer.abvita_score >= 17
-      @answer.abvita_classification = "Indice abvita Intermediário"
-    else
-      @answer.abvita_classification = "Indice abvita baixo"
-    end
-    puts "ABVIta Class: #{@answer.abvita_classification}"
+    # ################# ABVita ###############################
+    # @answer.abvita_score = @answer.CalculateABVitaScore(answer_params)
+    # puts "ABVitaScore: #{@answer.abvita_score}" 
+    # case 
+    # when @answer.abvita_score > 50
+    #   @answer.abvita_classification = "HIGH"
+    # when @answer.abvita_score >=36
+    #   @answer.abvita_classification = "INTERMEDIATE-HIGH"
+    # when @answer.abvita_score >= 17
+    #   @answer.abvita_classification = "INTERMEDIATE"
+    # else
+    #   @answer.abvita_classification = "LOW"
+    # end
+    # puts "ABVIta Class: #{@answer.abvita_classification}"
 
-    ################# Cardio ###############################
-    @answer.cardio_score = @answer.CalculateCardiacScore(answer_params)
-    puts "Cardio: #{@answer.cardio_score}"    
+    # ################# Cardio ###############################
+    # @answer.cardio_score = @answer.CalculateCardiacScore(answer_params)
+    # puts "Cardio: #{@answer.cardio_score}"    
     
-    case 
-    when @answer.cardio_score < 10
-      @answer.cardio_classification = "Risco cardiovascular baixo"
-    when @answer.cardio_score > 20
-      @answer.cardio_classification =  "Risco cardiovascular alto"
-    else
-      @answer.cardio_classification =  "Risco cardiovascular intermediário"
-    end
-    puts "Cardio Class: #{@answer.cardio_classification}"
+    # case 
+    # when @answer.cardio_score < 10
+    #   @answer.cardio_classification = "LOW"
+    # when @answer.cardio_score > 20
+    #   @answer.cardio_classification =  "HIGH"
+    # else
+    #   @answer.cardio_classification =  "INTERMEDIATE"
+    # end
+    # puts "Cardio Class: #{@answer.cardio_classification}"
 
-    ################# Final Score ###############################
-    case
-    when @answer.abvita_score > 50 || @answer.cardio_score > 20 || @answer.hospitalization_score >= 0.5
-      @answer.final_classification = "Risco geral alto"
-    when @answer.abvita_score >= 36 || @answer.hospitalization_score > 0.4
-      @answer.final_classification = "Risco geral intermediário alto"
-    when @answer.abvita_score >= 17 || @answer.cardio_score > 10 || @answer.hospitalization_score >= 0.3
-      @answer.final_classification = "Risco geral intermediário"
-    when @answer.abvita_score + @answer.cardio_score > 20 + @answer.hospitalization_score == 0
-      @answer.final_classification = "Idade insuficiente"
-    else
-      @answer.final_classification = "Risco geral baixo"
-    end
+    # ################# Final Score ###############################
+    # case
+    # when @answer.abvita_score > 50 || @answer.cardio_score > 20 || @answer.hospitalization_score >= 0.5
+    #   @answer.final_classification = "HIGH"
+    # when @answer.abvita_score >= 36 || @answer.hospitalization_score > 0.4
+    #   @answer.final_classification = "INTERMEDIATE-HIGH"
+    # when @answer.abvita_score >= 17 || @answer.cardio_score > 10 || @answer.hospitalization_score >= 0.3
+    #   @answer.final_classification = "INTERMEDIATE"
+    # when @answer.abvita_score + @answer.cardio_score > 20 + @answer.hospitalization_score == 0
+    #   @answer.final_classification = "Idade insuficiente"
+    # else
+    #   @answer.final_classification = "LOW"
+    # end
 
-    puts "Final score: #{@answer.final_classification}"
+    # puts "Final score: #{@answer.final_classification}"
 
     respond_to do |format|
       if @answer.save
@@ -122,8 +124,15 @@ class AnswersController < ApplicationController
 
   # PATCH/PUT /answers/1 or /answers/1.json
   def update
+
+    puts "entrou via update"
+    @answer = Answer.find(params[:id])
+    @answer.assign_attributes(answer_params)
+    @answer.calculate_scores(answer_params)
+
     respond_to do |format|
-      if @answer.update(answer_params)
+    
+      if @answer.save #@answer.update(answer_params)
         #format.html { redirect_to answer_url(@answer), notice: "Answer was successfully updated." }
         format.html { redirect_to advice_path(id: @answer.patient_id), notice: "Obrigado por preencher o questionário!" }
         format.json { render :show, status: :ok, location: @answer }
@@ -145,7 +154,11 @@ class AnswersController < ApplicationController
   end
   
 
+  
+
+
   def advice
+    
     @patient = Patient.find(params[:id])
     
     #@advice_check = Answer.find(params[:id])
@@ -163,11 +176,11 @@ class AnswersController < ApplicationController
 
     @color_hero_hospitalization = "is-info"
     case @advice_check.hospitalization_classification
-    when "Hospitalização baixa"
+    when "LOW"
       @color_hero_hospitalization = "is-success"
-    when "Hospitalização intermediária"
+    when "INTERMEDIATE"
       @color_hero_hospitalization = "is-warning"
-    when "Hospitalização Intermediária alta"
+    when "INTERMEDIATE-HIGH"
       @color_hero_hospitalization = "is-warning"
     else #"Hospitalização alta"
       @color_hero_hospitalization = "is-danger"
@@ -175,11 +188,11 @@ class AnswersController < ApplicationController
 
     @color_hero_abvita = "is-info"
     case @advice_check.abvita_classification
-    when "Indice abvita alto"
+    when "HIGH"
       @color_hero_abvita = "is-danger"
-    when "Indice abvita Intermediário"
+    when "INTERMEDIATE"
       @color_hero_abvita = "is-warning"
-    when "Indice abvita intermediário - alto"
+    when "INTERMEDIATE-HIGH"
       @color_hero_abvita = "is-warning"
     else #"Hospitalização alta"
       @color_hero_abvita = "is-success"
@@ -187,21 +200,21 @@ class AnswersController < ApplicationController
 
     @color_hero_cardio = "is-info"
     case @advice_check.cardio_classification
-    when "Risco cardiovascular alto"
+    when "HIGH"
       @color_hero_cardio = "is-danger"
-    when "Risco cardiovascular intermediário"
+    when "INTERMEDIATE"
       @color_hero_cardio = "is-warning"
     else #"Hospitalização alta"
-      @color_hero_abvita = "is-success"
+      @color_hero_cardio = "is-success"
     end
 
     @color_hero_final = "is-info"
     case @advice_check.final_classification
-    when "Risco geral alto"
+    when "HIGH"
       @color_hero_final = "is-danger"
-    when "Risco geral intermediário"
+    when "INTERMEDIATE"
       @color_hero_final = "is-warning"
-    when "Risco geral intermediário alto"
+    when "INTERMEDIATE-HIGH"
       @color_hero_final = "is-warning"
     else #"Hospitalização alta"
       @color_hero_final = "is-success"

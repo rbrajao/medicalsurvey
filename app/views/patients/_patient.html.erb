@@ -8,7 +8,14 @@
       <td><%= patient.birthday %></td>
       <td><%= patient.cpf %></td>
       <td><%= patient.status %></td>
-      <td><%= patient.answers.present? ? 'Sim' : 'Não'%></td>
+      <td><%= patient.user.email %></td>
+      <td>
+        <% if patient.answers.present? %>
+          Sim, <%= link_to 'Ver resposta', edit_answer_path(patient.answers.last) %>
+        <% else %>
+          Não
+        <% end %>
+      </td>
         <td>
         <%= link_to 'Edit', edit_patient_path(patient) %> |
         <%= link_to 'Delete', patient_path(patient), method: :delete, data: { confirm: 'Are you sure?' } %>

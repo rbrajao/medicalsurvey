@@ -1217,4 +1217,81 @@ class Answer < ApplicationRecord
    end
  end
 
+
+ def calculate_scores(answer_params)
+
+  self.initial_score = CalculateInitialScore(answer_params)
+  puts "Inicial: #{self.initial_score}" 
+
+  #calculate age of the patient
+  self.age = CalculateAge(answer_params[:birth_date])
+
+  #BMI values
+  self.bmi_value = CalculateBMIValue(self.age, answer_params[:bmi_height], answer_params[:bmi_weight])
+  self.bmi_classification = CalculateBMIClassification(self.age, self.bmi_value)
+
+  ################# hospitalization ###############################
+  self.hospitalization_score = CalculateHospitalizationScore(answer_params)
+  puts "Hospitalização SCORE: #{self.hospitalization_score}" 
+  case 
+  when self.hospitalization_score < 0.3
+    self.hospitalization_classification = "LOW"
+  when self.hospitalization_score < 0.4
+    self.hospitalization_classification = "INTERMEDIATE"
+  when self.hospitalization_score < 0.5
+    self.hospitalization_classification = "INTERMEDIATE-HIGH"
+  else
+    self.hospitalization_classification = "HIGH"
+  end
+  puts "Hospitalização CLASS: #{self.hospitalization_classification}"
+
+
+  ################# ABVita ###############################
+  self.abvita_score = self.CalculateABVitaScore(answer_params)
+  puts "ABVitaScore: #{self.abvita_score}" 
+  case 
+  when self.abvita_score > 50
+    self.abvita_classification = "HIGH"
+  when self.abvita_score >=36
+    self.abvita_classification = "INTERMEDIATE-HIGH"
+  when self.abvita_score >= 17
+    self.abvita_classification = "INTERMEDIATE"
+  else
+    self.abvita_classification = "LOW"
+  end
+  puts "ABVIta Class: #{self.abvita_classification}"
+
+  ################# Cardio ###############################
+  self.cardio_score = CalculateCardiacScore(answer_params)
+  puts "Cardio: #{self.cardio_score}"    
+  
+  case 
+  when self.cardio_score < 10
+    self.cardio_classification = "LOW"
+  when self.cardio_score > 20
+    self.cardio_classification =  "HIGH"
+  else
+    self.cardio_classification =  "INTERMEDIATE"
+  end
+  puts "Cardio Class: #{self.cardio_classification}"
+
+  ################# Final Score ###############################
+  case
+  when self.abvita_score > 50 || self.cardio_score > 20 || self.hospitalization_score >= 0.5
+    self.final_classification = "HIGH"
+  when self.abvita_score >= 36 || self.hospitalization_score > 0.4
+    self.final_classification = "INTERMEDIATE-HIGH"
+  when self.abvita_score >= 17 || self.cardio_score > 10 || self.hospitalization_score >= 0.3
+    self.final_classification = "INTERMEDIATE"
+  when self.abvita_score + self.cardio_score > 20 + self.hospitalization_score == 0
+    self.final_classification = "Idade insuficiente"
+  else
+    self.final_classification = "LOW"
+  end
+
+  puts "Final score: #{self.final_classification}"
+
+end
+
+
 end

@@ -31,29 +31,101 @@ class Advice
         advice_patient.hypertension = answer_patient.treatment_for_blood_pressure === "treatment_for_blood_pressure_sim" ? true : false
         advice_patient.high_utilization_of_health_services =  ((advice_patient.evaluate_risk_of_hospitalization === true || advice_patient.evaluate_causes_of_hospital_visits === true) && (advice_patient.evaluate_references_searches_of_doctors===true || advice_patient.evaluate_the_specialties===true)) ? true : false
 
+
+        msgAdviceSmoker = advice_patient.smoker === true ? "Aconselhamento para Fumante" : ""
+        msgAdviceExSmoker = advice_patient.ex_smoker === true ? "Aconselhamento para Ex-Fumante" : ""
+        msgAdviceMoreDailyBelow60 = (advice_patient.more_daily_medications===true && advice_patient.age <= 60) ? "Aconselhamento para usuários de vários medicamentos diários (até 60 anos)" : ""
+        msgAdviceMoreDailyUp60 = (advice_patient.more_daily_medications===true && advice_patient.age > 60) ? "Aconselhamento para usuários de vários medicamentos diários (acima de 60 anos)" : ""
+        msgAdviceTreatmentDepression = advice_patient.treatment_of_depression === true ? "Aconselhamento para tratamento de depressão" : ""
+        msgAdviceLittlePhysicalActivity = advice_patient.little_physical_activity === true ? "Aconselhamento para praticantes de pouca atividade física" : ""
+        msgAdviceZeroPhysicalActivity = advice_patient.zero_physical_activity === true ? "Aconselhamento para não praticantes de atividade física" : ""
+        msgAdviceHadCancer = advice_patient.had_cancer === true ? "Aconselhamento para pacientes que teve câncer" : ""
+        msgAdviceFamilyHistoryCancer = advice_patient.family_history_of_cancer  === true ? "Aconsulhamento para pacientes que possui histórico de câncer na familia" : ""
+        msgAdviceManAge70More = (advice_patient.man === true && advice_patient.age >= 70) ? "Aconselhamento para homens que possui idade superior a 69 anos" : ""
+        msgAdviceManAge75More = (advice_patient.man === true && advice_patient.age >= 75) ? "Aconselhamento para homens que possui idade superior a 75 anos" : ""
+        msgAdviceEvaluateCausesHospitalVisits = advice_patient.evaluate_causes_of_hospital_visits === true ? "Aconselhamento para avaliação de causas das visitas ao Hospital" : ""
+        msgAdviceRiskHospitalization = advice_patient.evaluate_risk_of_hospitalization === true ? "Aconselhamento para avaliação de riscos de internação em Hospital" : ""
+        msgAdviceEvaluateSearchDoctors = advice_patient.evaluate_references_searches_of_doctors === true ? "Aconselhamento para avaliação das pesquisas de referências de médicos" : ""
+        msgAdviceTheSpecialties = advice_patient.evaluate_the_specialties === true ? "Aconselhamento para avaliação de especialistas" : ""
+        msgAdviceObesity = advice_patient.obesity === true ? "Aconselhamento para obesos" : ""
+        msgAdviceHighHealthServices = advice_patient.high_utilization_of_health_services === true ? "Aconselhamento para alta utilização de serviços de saúde" : ""
+        
+        msgDoctorInfo = ""
+        msgExamsYears = ""
+        msgExamsQuarterly = ""
+        msgExamsAnother = ""
+        msgExamsGoal = ""
+        msgMultiAmbulatory = ""
+        msgMultiTherapeuticGroup = ""
+        msgMultiTelemonitoring = ""
+        msgAdvice = ""
+        msgDemand = ""
+        if advice_patient.diabetes === true && answer_patient.final_classification === 'HIGH'
+            
+            msgDoctorInfo = "MÉDICO DE NÍVEL 1 (Endocrinologista ou Geriatra) - Consultas 40min"
+            msgExamsYears = "Fundo de olho, Perfil lipídico, Função renal, Urina I, Microalbuminúria / proteinúria, ECG  (Rotina para a doença)"
+            msgExamsQuarterly = "Perfil Glicêmico (GJ, Hbglic)"
+            msgExamsAnother = "Exames Pontuais  - Vão depender da avaliação médica e demanda gerada nesta avaliação, Radiografia de tórax:Recomendada para pacientes com suspeita clínica de insuficiência cardíaca, quando os demais exames não estão disponíveis, e para avaliação de acometimento pulmonar e de aorta. Ecocardiograma:Pacientes hipertensos sem hipertrofia ventricular esquerda ao ECG, mas com dois ou mais fatores de risco; hipertensos com suspeita clínica de insuficiência cardíaca. Microalbuminúria em amostra isolada de urina:Pacientes hipertensos diabéticos, hipertensos com síndrome metabólica e hipertensos com dois ou mais fatores de risco. Ultrassom de artérias carótidas:Pacientes com sopro carotídeo, com sinais de doença cerebrovascular, ou com doença aterosclerótica em outros territórios. Teste ergométrico:Suspeita de doença coronariana estável, diabético ou antecedente familiar para doença coronariana em paciente com pressão arterial controlada. Hemoglobina glicada:Em portadores de síndrome matabólica, diabéticos ou intolerantes a glicose."        
+            msgExamsGoal = "Controle de fatores de risco modificáveis: dieta, atividade física, excesso de peso"
+            msgExamsGoal += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : "" 
+            msgExamsGoal += advice_patient.age < 60 ? " Hbglic precisa ser menor ou igual a 7" : ""
+            msgExamsGoal += (advice_patient.age >= 60 || advice_patient.age < 85) ? " Hbglic precisa ser menor ou igual a 8" : ""
+            msgExamsGoal += " Glicemia sanguínea 140 -180 mg/dl na maioria dos pacientes críticos, como marcador de curto prazo"
+            msgExamsGoal += " Atividade Física a atingir 150min/sem (avaliar teste ergométrico se necessário)"
+            msgExamsGoal += " Perda de Medidas de circunferência Abdominal (homens 94cm e mulheres 80cm)"
+            msgExamsGoal += advice_patient.age >=85 ? " Paciente muito idoso, risco de queda, risco de Risco de Interação Farmacológica, Risco Nutricional, Seguimento cognitivo" : ""
+            msgMultiAmbulatory = "Ambulatorial: Acompanhamento Nutricional e Prevenção do Pé Diabético"
+            msgMultiTherapeuticGroup = "Grupos formados por especialidades multidisciplinar com a finalidade de manejo das patologias de risco. Atividades diversas com finalidade terapêutica e não recreativa. Hábitos saudáveis, Auto conhecimento, Auto gerenciamento da saúde, Atividade Física"
+            msgMultiTelemonitoring = "Grupo formado por enfermeiras para a realização de controle das metas clínicas dos pacientes abordados e suporte a distancia das demandas para pacientes de Elevado e Intermediario Riscos. Ligações telefônicas amparadas por roteiros e protocolos pré estabelecidos e amparados por suporte medico in loco. Realizado por enfermeiro, Reforçar metas de controle pressórico e lipídico, Resolução de demandas de utilização do sistema, Assistência farmacêutica para interações farmacológicas"
+            msgMultiTelemonitoring += answer_patient.hospitalization_classification === "HIGH" ? " Ligações telefônicas quinzenais para resolver demandas, Fidelizar atendimento com médico único" : ""
+            msgMultiTelemonitoring += (answer_patient.hospitalization_classification === "INTERMEDIATE" && answer_patient.abvita_classification === "HIGH") ? "  Iniciar Telemonitoramento" : ""
+            msgAdvice = "Controle do peso (avaliar indicação de bariátrica para IMC > 40 e > 35 com comorbidades), Medidas da circunferência abdominal, Atividade física supervisionada, Grupos para fortalecer conhecimento da doença e aderência, Agenda de saúde"
+            msgAdvice += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : ""
+                        
+        elsif advice_patient.diabetes === true && answer_patient.final_classification === 'INTERMEDIATE-HIGH'
+
+            msgDoctorInfo = advice_patient.age > 60 ? "Indicaçaõ de geriatra" : "Indicação de clínico geral - consultas de 30min"
+            msgExamsYears = "Fundo de olho, Perfil lipídico, Função renal, Urina I, Microalbuminúria / proteinúria, ECG  (Rotina para a doença)"
+            msgExamsQuarterly = "Perfil Glicêmico (GJ, Hbglic)"
+            msgExamsAnother = "Exames Pontuais  - Vão depender da avaliação médica e demanda gerada nesta avaliação, Radiografia de tórax:Recomendada para pacientes com suspeita clínica de insuficiência cardíaca, quando os demais exames não estão disponíveis, e para avaliação de acometimento pulmonar e de aorta. Ecocardiograma:Pacientes hipertensos sem hipertrofia ventricular esquerda ao ECG, mas com dois ou mais fatores de risco; hipertensos com suspeita clínica de insuficiência cardíaca. Microalbuminúria em amostra isolada de urina:Pacientes hipertensos diabéticos, hipertensos com síndrome metabólica e hipertensos com dois ou mais fatores de risco. Ultrassom de artérias carótidas:Pacientes com sopro carotídeo, com sinais de doença cerebrovascular, ou com doença aterosclerótica em outros territórios. Teste ergométrico:Suspeita de doença coronariana estável, diabético ou antecedente familiar para doença coronariana em paciente com pressão arterial controlada. Hemoglobina glicada:Em portadores de síndrome matabólica, diabéticos ou intolerantes a glicose."        
+            msgExamsGoal = "Controle de fatores de risco modificáveis: dieta, atividade física, excesso de peso"
+            msgExamsGoal += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : "" 
+            msgExamsGoal += advice_patient.age < 60 ? " Hbglic precisa ser menor ou igual a 7" : ""
+            msgExamsGoal += (advice_patient.age >= 60 || advice_patient.age < 85) ? " Hbglic precisa ser menor ou igual a 8" : ""
+            msgExamsGoal += " Glicemia sanguínea 140 -180 mg/dl na maioria dos pacientes críticos, como marcador de curto prazo"
+            msgExamsGoal += " Atividade Física a atingir 150min/sem (avaliar teste ergométrico se necessário)"
+            msgExamsGoal += " Perda de Medidas de circunferência Abdominal (homens 94cm e mulheres 80cm)"
+            msgExamsGoal += advice_patient.age >=85 ? " Paciente muito idoso, risco de queda, risco de Risco de Interação Farmacológica, Risco Nutricional, Seguimento cognitivo" : ""
+            msgMultiAmbulatory = "Encaminhar para seguimento Ambulatorial, se: Aumento da HbGlic, Circunferência abdominal ou IMC, Má aderência, Diagnóstico de HAS ou DLP, Risco assistencial"
+            msgMultiTherapeuticGroup = ""
+            msgMultiTelemonitoring = ""
+            msgAdvice = "Controle do peso (avaliar indicação de bariátrica para IMC > 40 e > 35 com comorbidades), Medidas da circunferência abdominal, Atividade física supervisionada, Grupos para fortalecer conhecimento da doença e aderência, Agenda de saúde"
+            msgAdvice += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : ""
+
+        elsif advice_patient.diabetes === true && answer_patient.final_classification === 'LOW'
+        
+            msgDoctorInfo = advice_patient.age > 60 ? "Indicaçaõ de geriatra" : "Indicação de clínico geral - consultas de 20min"
+            msgExamsYears = "Fundo de olho, Perfil lipídico, Função renal, Urina I, Microalbuminúria / proteinúria, ECG  (Rotina para a doença)"
+            msgExamsQuarterly = "Perfil Glicêmico (GJ, Hbglic)"
+            msgExamsAnother = "Exames Pontuais  - Vão depender da avaliação médica e demanda gerada nesta avaliação, Radiografia de tórax:Recomendada para pacientes com suspeita clínica de insuficiência cardíaca, quando os demais exames não estão disponíveis, e para avaliação de acometimento pulmonar e de aorta. Ecocardiograma:Pacientes hipertensos sem hipertrofia ventricular esquerda ao ECG, mas com dois ou mais fatores de risco; hipertensos com suspeita clínica de insuficiência cardíaca. Microalbuminúria em amostra isolada de urina:Pacientes hipertensos diabéticos, hipertensos com síndrome metabólica e hipertensos com dois ou mais fatores de risco. Ultrassom de artérias carótidas:Pacientes com sopro carotídeo, com sinais de doença cerebrovascular, ou com doença aterosclerótica em outros territórios. Teste ergométrico:Suspeita de doença coronariana estável, diabético ou antecedente familiar para doença coronariana em paciente com pressão arterial controlada. Hemoglobina glicada:Em portadores de síndrome matabólica, diabéticos ou intolerantes a glicose."        
+            msgExamsGoal = "Controle de fatores de risco modificáveis: dieta, atividade física, excesso de peso"
+            msgExamsGoal += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : "" 
+            msgExamsGoal += advice_patient.age < 60 ? " Hbglic precisa ser menor ou igual a 7" : ""
+            msgExamsGoal += (advice_patient.age >= 60 || advice_patient.age < 85) ? " Hbglic precisa ser menor ou igual a 8" : ""
+            msgExamsGoal += " Glicemia sanguínea 140 -180 mg/dl na maioria dos pacientes críticos, como marcador de curto prazo"
+            msgExamsGoal += " Atividade Física a atingir 150min/sem (avaliar teste ergométrico se necessário)"
+            msgExamsGoal += " Perda de Medidas de circunferência Abdominal (homens 94cm e mulheres 80cm)"
+            msgExamsGoal += advice_patient.age >=85 ? " Paciente muito idoso, risco de queda, risco de Risco de Interação Farmacológica, Risco Nutricional, Seguimento cognitivo" : ""
+            msgMultiAmbulatory = "Encaminhar para seguimento Ambulatorial, se: Aumento da HbGlic, Circunferência abdominal ou IMC, Má aderência, Diagnóstico de HAS ou DLP, Risco assistencial"
+            msgMultiTherapeuticGroup = ""
+            msgMultiTelemonitoring = ""
+            msgAdvice = "Controle do peso (avaliar indicação de bariátrica para IMC > 40 e > 35 com comorbidades), Medidas da circunferência abdominal, Atividade física supervisionada, Grupos para fortalecer conhecimento da doença e aderência, Agenda de saúde"
+            msgAdvice += (advice_patient.smoker === true || advice_patient.ex_smoker === true) ? " Tabagismo,  Abordagem Intensiva Específica, Pacientes que manifestem desejo de abandonar o vício Sessões estruturadas de terapia individual ou em grupo Medicação de referencia nacional Utilização de Escalas (Entrevista Motivacional, Fagerstrom, Di Clemente)" : ""
+
+        end
+
+        puts answer_patient.final_classification
     end
 
-    def generateAdviceMessages(advice_patient)
-
-        msgAdviceSmoker = advice_patient.smoker === true ? "" : ""
-        msgAdviceExSmoker = advice_patient.ex_smoker === true ? "" : ""
-        msgAdviceMoreDailyBelow60 = (advice_patient.more_daily_medications===true && advice_patient.age <= 60) ? "" : ""
-        msgAdviceMoreDailyUp60 = (advice_patient.more_daily_medications===true && advice_patient.age > 60) ? "" : ""
-        msgAdviceTreatmentDepression = advice_patient.treatment_of_depression === true ? "" : ""
-        msgAdviceLittlePhysicalActivity = advice_patient.little_physical_activity === true ? "" : ""
-        msgAdviceZeroPhysicalActivity = advice_patient.zero_physical_activity === true ? "" : ""
-        msgAdviceHadCancer = advice_patient.had_cancer === true ? "" : ""
-        msgAdviceFamilyHistoryCancer = advice_patient.family_history_of_cancer  === true ? "" : ""
-        msgAdviceManAge70More = (advice_patient.man === true && advice_patient.age >= 70) ? "" : ""
-        msgAdviceManAge75More = (advice_patient.man === true && advice_patient.age >= 75) ? "" : ""
-        msgAdviceEvaluateCausesHospitalVisits = advice_patient.evaluate_causes_of_hospital_visits === true ? "" : ""
-        msgAdviceRiskHospitalization = advice_patient.evaluate_risk_of_hospitalization === true ? "" : ""
-        msgAdviceEvaluateSearchDoctors = advice_patient.evaluate_references_searches_of_doctors === true ? "" : ""
-        msgAdviceTheSpecialties = advice_patient.evaluate_the_specialties === true ? "" : ""
-        msgAdviceObesity = advice_patient.obesity === true ? "" : ""
-        msgAdviceHighHealthServices = advice_patient.high_utilization_of_health_services === true ? "" : ""
- 
-    end
-
-  end
-  
+    
+end

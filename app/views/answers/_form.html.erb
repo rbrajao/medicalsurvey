@@ -20,7 +20,14 @@
       </p>
         <br>
         <div class="columns">
-          <div class="column p-5">Nome: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %></div>
+          <% if current_user.patient? %> 
+            <div class="column p-5">Nome: <%=current_user.patient.name%> </div>
+            <%= form.hidden_field :patient_id, value: current_user.patient.id %>
+          <%else%>
+            <div class="column p-5">Nome: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %></div>
+          <%end%>
+         
+          
           <div class="column">Data de nascimento: <%= form.date_field :birth_date %></div>
           <div class="column"> 
               <%= form.label "Sexo:" %>
