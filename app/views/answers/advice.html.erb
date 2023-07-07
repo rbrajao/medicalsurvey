@@ -60,7 +60,15 @@
                 Exames/Metas
               </p>
               <p class="subtitle">
-                
+                <%=@advice_messages["msgDoctorInfo"]%>
+                <br>
+                <b>Exames anuais sugeridos:</b> <%=@advice_messages["msgExamsYears"]%>
+                <br>
+                <b>Exames trimestrais sugeridos:</b> <%=@advice_messages["msgExamsQuarterly"]%>
+                <br>
+                <b>Outros exames sugeridos:</b> <%=@advice_messages["msgExamsAnother"]%>
+                <br>
+                <b>Exames finais:</b> <%=@advice_messages["msgExamsGoal"]%>
               </p>
             </div>
           </section>
@@ -71,7 +79,11 @@
                 Equipe multiprofissional
               </p>
               <p class="subtitle">
-                
+                <%=@msgMultiAmbulatory%>
+                <br>
+                <b>Terapia de grupo:</b> <%=@advice_messages["msgMultiTherapeuticGroup"]%>
+                <br>
+                <b>Teleorientação:</b> <%=@advice_messages["msgMultiTelemonitoring"]%>
               </p>
             </div>
           </section>
@@ -82,7 +94,7 @@
                 Aconselhamento
               </p>
               <p class="subtitle">
-                
+                <b>Aconselhamento:</b> <%=@advice_messages["msgAdvice"]%>
               </p>
             </div>
           </section>
@@ -93,7 +105,7 @@
                 Apenas se surgir demanda
               </p>
               <p class="subtitle">
-                
+                <%=@advice_messages["msgDemand"]%>
               </p>
             </div>
           </section>

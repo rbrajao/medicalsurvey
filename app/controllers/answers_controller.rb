@@ -172,7 +172,7 @@ class AnswersController < ApplicationController
 
     
     @advice_patient = Advice.new
-    @advice_patient.generateAdvice(@patient, @advice_patient)
+    @advice_messages = @advice_patient.generateAdvice(@patient, @advice_patient)  #@msgDoctorInfo, @msgExamsYears, @msgExamsQuarterly, @msgExamsAnother, @msgExamsGoal, @msgMultiAmbulatory, @msgMultiTherapeuticGroup, @msgMultiTelemonitoring, @msgAdvice, @msgDemand = @advice_patient.generateAdvice(@patient, @advice_patient)
 
     @color_hero_hospitalization = "is-info"
     case @advice_check.hospitalization_classification
