@@ -60,9 +60,9 @@
                 Exames/Metas
               </p>
               <p class="subtitle">
-                <%=@advice_messages["msgDoctorInfo"]%>
+                <%=@advice_messages["msgDoctorInfo"] + @advice_messages["msgDoctorInfo-HYP"]%>
                 <br>
-                <b>Exames anuais sugeridos:</b> <%=@advice_messages["msgExamsYears"]%>
+                <b>Exames anuais sugeridos:</b> <%=@advice_messages["msgExamsYears"] + @advice_messages["msgExamsYears-HYP"]%>
                 <br>
                 <b>Exames trimestrais sugeridos:</b> <%=@advice_messages["msgExamsQuarterly"]%>
                 <br>
@@ -108,22 +108,8 @@
                 <%=@advice_messages["msgDemand"]%>
               </p>
             </div>
-          </section>
-          <br>
-
-
-            <div class="columns">
-              <div class="column p-5">{{ patient.hospitalizationScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades maiores ou igual a 65 anos' : patient.hospitalizationScoreMessage}}</div>
-              <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
-            </div>
-            <div class="columns">
-              <div class="column p-5">{{ patient.cardiacScoreLevel == 'INSUFFICIENT_AGE' ? 'Idade Insuficiente para gerar este risco – risco gerado para idades menores do que 79 anos' : patient.cardiacScoreLevelMessage}}</div>
-              <div class="column p-5">{{pathologyName(advice.pathology)}}</div>
-            </div>
-
-            <div class="columns">
-              <div class="column p-5">{{riskMessage(patient.totalScoreLevel)}} </div>
-            </div>
-          </section>
+        </section>
+        <br>
+      </section>
     <article>
 </section>

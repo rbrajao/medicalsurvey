@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_15_155211) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_09_195427) do
   create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "patient_id", null: false
     t.date "birth_date"
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_155211) do
     t.string "abvita_classification"
     t.string "cardio_classification"
     t.string "final_classification"
+    t.string "high_cholesterol"
     t.index ["patient_id"], name: "index_answers_on_patient_id"
   end
 
