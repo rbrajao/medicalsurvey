@@ -60,6 +60,8 @@ test:
 #
 production:
   <<: *default
-  database: mysql://b656055ca244e6:5cb07956@us-cdbr-east-06.cleardb.net/heroku_caefaa20d5c4520?reconnect=true
+  url: <%= ENV['DATABASE_URL'] %>
+  #database: mysql://b656055ca244e6:5cb07956@us-cdbr-east-06.cleardb.net/heroku_caefaa20d5c4520?reconnect=true
   #username: b656055ca244e6
   #password: 5cb07956 #<%= ENV["MEDICALSURVEY_DATABASE_PASSWORD"] %>
+  
