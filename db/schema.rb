@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_09_195427) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_10_160836) do
   create_table "answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "patient_id", null: false
     t.date "birth_date"
@@ -87,6 +87,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_195427) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "pathologies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.boolean "pathology_diabetes"
+    t.boolean "pathology_heart_disease"
+    t.boolean "pathology_smoker"
+    t.boolean "pathology_ex_smoker"
+    t.boolean "pathology_hypertension"
+    t.boolean "pathology_more_daily_medications"
+    t.boolean "pathology_treatment_of_depression"
+    t.boolean "pathology_family_history_of_cancer"
+    t.boolean "pathology_had_cancer"
+    t.boolean "pathology_little_physical_activity"
+    t.boolean "pathology_zero_physical_activity"
+    t.boolean "pathology_obesity"
+    t.boolean "pathology_dyslipidemia"
+    t.boolean "pathology_high_utilization_of_health_services"
+    t.boolean "pathology_man"
+    t.boolean "pathology_evaluate_causes_of_hospital_visits"
+    t.boolean "pathology_evaluate_risk_of_hospitalization"
+    t.boolean "pathology_evaluate_references_searches_of_doctor"
+    t.boolean "pathology_evaluate_the_specialties"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_pathologies_on_patient_id"
+  end
+
   create_table "patients", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "event_id", null: false
@@ -125,6 +151,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_195427) do
   add_foreign_key "answers", "patients"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "surveys"
+  add_foreign_key "pathologies", "patients"
   add_foreign_key "patients", "events"
   add_foreign_key "patients", "users"
 end

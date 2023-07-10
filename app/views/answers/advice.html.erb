@@ -9,9 +9,12 @@
             <h1><%= @patient.name%>, <%= @advice_check.age %> anos</h1>
           </div>
           <br>
+          
            <section class="hero is-small <%=@color_hero_hospitalization%>">
             <div class="hero-body">
               <p class="title">
+
+
                 Risco de internação hospitalar
               </p>
               <p class="subtitle">
@@ -60,30 +63,127 @@
                 Exames/Metas
               </p>
               <p class="subtitle">
-                <%=@advice_messages["msgDoctorInfo"] + @advice_messages["msgDoctorInfo-HYP"]%>
                 <br>
-                <b>Exames anuais sugeridos:</b> <%=@advice_messages["msgExamsYears"] + @advice_messages["msgExamsYears-HYP"]%>
+                DIABETES (sugestões): <%=@advice_messages["msgDoctorInfo-DIAB"]%> 
+                <div class="columns">
+                  <div class="column">
+                    Exames anuais:<BR><%=@advice_messages["msgExamsYears-DIAB"]%>
+                    <br>
+                    <br>
+                    Exames trimestrais:<BR><%=@advice_messages["msgExamsQuarterly-DIAB"]%>
+                  </div>
+                  <div class="column">
+                    Outros exames sugeridos:<BR><%=@advice_messages["msgExamsAnother-DIAB"]%>
+                  </div>
+                  <div class="column">
+                    Exames finais:<BR><%=@advice_messages["msgExamsGoal-DIAB"]%>
+                  </div>
+                </div>
+              </p>
+               <p class="subtitle">
                 <br>
-                <b>Exames trimestrais sugeridos:</b> <%=@advice_messages["msgExamsQuarterly"]%>
+                HIPERTENSÃO (sugestões): <%=@advice_messages["msgDoctorInfo-HYP"]%> 
+                <div class="columns">
+                  <div class="column">
+                    Exames anuais:<BR><%=@advice_messages["msgExamsYears-HYP"]%>
+                    <br>
+                    <br>
+                    Exames trimestrais:<BR><%=@advice_messages["msgExamsQuarterly-HYP"]%>
+                  </div>
+                  <div class="column">
+                    Outros exames sugeridos:<BR><%=@advice_messages["msgExamsAnother-HYP"]%>
+                  </div>
+                  <div class="column">
+                    Exames finais:<BR><%=@advice_messages["msgExamsGoal-HYP"]%>
+                  </div>
+                </div>
+              </p>
+               <p class="subtitle">
                 <br>
-                <b>Outros exames sugeridos:</b> <%=@advice_messages["msgExamsAnother"]%>
+                CARDÍACOS (sugestões): <%=@advice_messages["msgDoctorInfo-HD"]%> 
+                <div class="columns">
+                  <div class="column">
+                    Exames anuais:<BR><%=@advice_messages["msgExamsYears-HD"]%>
+                    <br>
+                    <br>
+                    Exames trimestrais:<BR><%=@advice_messages["msgExamsQuarterly-HD"]%>
+                  </div>
+                  <div class="column">
+                    Outros exames sugeridos:<BR><%=@advice_messages["msgExamsAnother-HD"]%>
+                  </div>
+                  <div class="column">
+                    Exames finais:<BR><%=@advice_messages["msgExamsGoal-HD"]%>
+                  </div>
+                </div>
+              </p>
+              <p class="subtitle">
                 <br>
-                <b>Exames finais:</b> <%=@advice_messages["msgExamsGoal"]%>
+                TABAGISTAS (sugestões): <%=@advice_messages["msgDoctorInfo-SMK"]%> 
+                <div class="columns">
+                  <div class="column">
+                    Exames anuais:<BR><%=@advice_messages["msgExamsYears-SMK"]%>
+                    <br>
+                    <br>
+                    Exames trimestrais:<BR><%=@advice_messages["msgExamsQuarterly-SMK"]%>
+                  </div>
+                  <div class="column">
+                    Outros exames sugeridos:<BR><%=@advice_messages["msgExamsAnother-SMK"]%>
+                  </div>
+                  <div class="column">
+                    Exames finais:<BR><%=@advice_messages["msgExamsGoal-SMK"]%>
+                  </div>
+                </div>
               </p>
             </div>
           </section>
           <br>
+
           <section class="hero is-small is-info">
             <div class="hero-body">
               <p class="title">
                 Equipe multiprofissional
               </p>
               <p class="subtitle">
-                <%=@msgMultiAmbulatory%>
-                <br>
-                <b>Terapia de grupo:</b> <%=@advice_messages["msgMultiTherapeuticGroup"]%>
-                <br>
-                <b>Teleorientação:</b> <%=@advice_messages["msgMultiTelemonitoring"]%>
+                
+                 <br>
+                  <div class="columns">
+                    <div class="column">
+                      DIABETES:
+                      <br>
+                      Terapia de grupo:<%=@advice_messages["msgMultiTherapeuticGroup-DIAB"]%>
+                      <br>
+                      Teleorientação:<%=@advice_messages["msgMultiTelemonitoring-DIAB"]%>
+                      <BR>
+                      Grupo atendimento:<%=@advice_messages["msgMultiAmbulatory-DIAB"]%>
+                    </div>
+                    <div class="column">
+                      HIPERTENSÃO:
+                      <br>
+                      Terapia de grupo:<%=@advice_messages["msgMultiTherapeuticGroup-HYP"]%>
+                      <br>
+                      Teleorientação:<%=@advice_messages["msgMultiTelemonitoring-HYP"]%>
+                      <BR>
+                      Grupo atendimento:<%=@advice_messages["msgMultiAmbulatory-HYP"]%>
+                    </div>
+                    <div class="column">
+                      CARDÍACOS:
+                      <br>
+                      Terapia de grupo:<%=@advice_messages["msgMultiTherapeuticGroup-HD"]%>
+                      <br>
+                      Teleorientação:<%=@advice_messages["msgMultiTelemonitoring-HD"]%>
+                      <BR>
+                      Grupo atendimento:<%=@advice_messages["msgMultiAmbulatory-HD"]%>
+                    </div>
+                    <div class="column">
+                      TABAGISTAS:
+                      <br>
+                      Terapia de grupo:<%=@advice_messages["msgMultiTherapeuticGroup-SMK"]%>
+                      <br>
+                      Teleorientação:<%=@advice_messages["msgMultiTelemonitoring-SMK"]%>
+                      <BR>
+                      Grupo atendimento:<%=@advice_messages["msgMultiAmbulatory-SMK"]%>
+                    </div>
+                  </div>
               </p>
             </div>
           </section>
@@ -93,23 +193,34 @@
               <p class="title">
                 Aconselhamento
               </p>
-              <p class="subtitle">
-                <b>Aconselhamento:</b> <%=@advice_messages["msgAdvice"]%>
+               <p class="subtitle">
+                
+                 <br>
+                  <div class="columns">
+                    <div class="column">
+                      DIABETES:
+                      <br>
+                      Aconselhamento:<%=@advice_messages["msgAdvice-DIAB"]%>
+                    </div>
+                    <div class="column">
+                      HIPERTENSÃO:
+                      <br>
+                      Aconselhamento:<%=@advice_messages["msgAdvice-HYP"]%>
+                    </div>
+                    <div class="column">
+                      CARDÍACOS:
+                      <br>
+                      Aconselhamento:<%=@advice_messages["msgAdvice-HD"]%>
+                    </div>
+                    <div class="column">
+                      TABAGISTAS:
+                      <br>
+                      Aconselhamento:<%=@advice_messages["msgAdvice-SMK"]%>
+                    </div>
+                  </div>
               </p>
             </div>
           </section>
-          <br>
-           <section class="hero is-small is-info">
-            <div class="hero-body">
-              <p class="title">
-                Apenas se surgir demanda
-              </p>
-              <p class="subtitle">
-                <%=@advice_messages["msgDemand"]%>
-              </p>
-            </div>
-        </section>
-        <br>
       </section>
     <article>
 </section>
