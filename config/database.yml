@@ -16,7 +16,7 @@ default: &default
   database: mysql://b656055ca244e6:5cb07956@us-cdbr-east-06.cleardb.net/heroku_caefaa20d5c4520?reconnect=true
   #username: root
   #password:
-  socket: /tmp/mysql.sock
+  #socket: /tmp/mysql.sock
 
 development:
   <<: *default
