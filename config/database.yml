@@ -13,10 +13,19 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  database: <%= ENV['CLEARDB_DATABASE_URL'] %>
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  username: b656055ca244e6 #<%= ENV['CLEARDB_USERNAME'] %>
+  password: 5cb07956 #<%= ENV['CLEARDB_PASSWORD'] %>
+  host: us-cdbr-east-06.cleardb.net #<%= ENV['CLEARDB_HOST'] %>
+  #port: <%= ENV['CLEARDB_PORT'] %>
+  database: heroku_caefaa20d5c4520 #<%= ENV['CLEARDB_DATABASE_URL'] %>
+# default: &default
+#   adapter: mysql2
+#   encoding: utf8mb4
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   database: <%= ENV['CLEARDB_DATABASE_URL'] %>
+  #username: root
+  #password:
+  #socket: /tmp/mysql.sock
 
 development:
   <<: *default
