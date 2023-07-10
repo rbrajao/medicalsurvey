@@ -10,6 +10,7 @@
 User.create!(
     email: 'rbrajao@gmail.com',
     encrypted_password: 'teste123',
+    password: 'teste123',
     role: 'admin',
     status: true
   )
