@@ -7,10 +7,15 @@ class UsersController < ApplicationController
   end
 
   def new
+    
+    puts "passou pelo new simples"
     @user = User.new
   end
 
   def create
+
+    puts "passou pelo create"
+
     @user = User.new(user_params)
     if @user.save
       redirect_to users_path, notice: 'User created successfully.'
@@ -19,11 +24,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+  end
+
   def edit
     @user = User.find(params[:id])
   end
 
   def update
+
     @user = User.find(params[:id])
 
     if params[:user][:encrypted_password].blank?
@@ -47,7 +56,6 @@ class UsersController < ApplicationController
   end
 
   private
-
   def user_params
     params.require(:user).permit(:email, :encrypted_password, :password_confirmation, :role, :status)
   end

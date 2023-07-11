@@ -1221,26 +1221,27 @@ class Answer < ApplicationRecord
  def calculate_scores(answer_params)
 
   @pathology = Pathology.new
-  @pathology.pathology_diabetes = answer_params[:have_diabetes] === "Diabetes_Sim" ? true : false
-  @pathology.smoker = answer_params[:smoker] === "smoker_fumante" ? true : false
-  @pathology.ex_smoker = answer_params[:smoker] === "smoker_exfumante" ? true : false
-  @pathology.more_daily_medications = (answer_params[:many_daily_medications] === "AteQuatro" || answer_params[:many_daily_medications] === "AcimaCinco") ? true : false
-  @pathology.treatment_of_depression = answer_params[:treatment_of_depression] === "treatment_of_depression_sim" ? true : false
-  @pathology.man = answer_params[:sex] === "Masculino" ? true : false
-  @pathology.evaluate_causes_of_hospital_visits = answer_params[:night_as_patient] === "DuasTresVezes" ? true : false
-  @pathology.evaluate_risk_of_hospitalization = answer_params[:night_as_patient] === "MaisTresVezes" ? true : false
-  @pathology.evaluate_references_searches_of_doctors = answer_params[:searched_doctor] === "sd_QuatroSeisVezes" ? true : false
-  @pathology.evaluate_the_specialties = answer_params[:searched_doctor] === "sd_MaiSeisVezes" ? true : false
-  @pathology.family_history_of_cancer = answer_params[:family_history_of_cancer] === "family_history_of_cancer_sim" ? true : false
-  @pathology.had_cancer = answer_params[:had_cancer] === "had_cancer_sim" ? true : false
-  @pathology.little_physical_activity = answer_params[:minutes_of_physical_activity] === "minutes_of_physical_activity_menos150"  ? true : false
-  @pathology.zero_physical_activity = answer_params[:minutes_of_physical_activity] === "minutes_of_physical_activity_nenhuma"  ? true : false
-  @pathology.obesity = answer_params[:bmi_classification] === "BMI_OBESITY" ? true : false
-  @pathology.heart_disease = answer_params[:heart_attack] === "heart_attack_sim" ? true : false
-  @pathology.dyslipidemia = answer_params[:cholesterol_control] === "cholesterol_control_sim" ? true : false
-  @pathology.hypertension = answer_params[:treatment_for_blood_pressure] === "treatment_for_blood_pressure_sim" ? true : false
-  @pathology.high_utilization_of_health_services =  ((answer_params[:evaluate_risk_of_hospitalization] === true || answer_params[:evaluate_causes_of_hospital_visits] === true) && (answer_params[:evaluate_references_searches_of_doctors]===true || answer_params[:evaluate_the_specialties]===true)) ? true : false
 
+  @pathology.patient_id = answer_params[:patient_id]
+  @pathology.pathology_diabetes = answer_params[:have_diabetes] === "Diabetes_Sim" ? true : false
+  @pathology.pathology_smoker = answer_params[:smoker] === "smoker_fumante" ? true : false
+  @pathology.pathology_ex_smoker = answer_params[:smoker] === "smoker_exfumante" ? true : false
+  @pathology.pathology_more_daily_medications = (answer_params[:many_daily_medications] === "AteQuatro" || answer_params[:many_daily_medications] === "AcimaCinco") ? true : false
+  @pathology.pathology_treatment_of_depression = answer_params[:treatment_of_depression] === "treatment_of_depression_sim" ? true : false
+  @pathology.pathology_man = answer_params[:sex] === "Masculino" ? true : false
+  @pathology.pathology_evaluate_causes_of_hospital_visits = answer_params[:night_as_patient] === "DuasTresVezes" ? true : false
+  @pathology.pathology_evaluate_risk_of_hospitalization = answer_params[:night_as_patient] === "MaisTresVezes" ? true : false
+  @pathology.pathology_evaluate_references_searches_of_doctor = answer_params[:searched_doctor] === "sd_QuatroSeisVezes" ? true : false
+  @pathology.pathology_evaluate_the_specialties = answer_params[:searched_doctor] === "sd_MaiSeisVezes" ? true : false
+  @pathology.pathology_family_history_of_cancer = answer_params[:family_history_of_cancer] === "family_history_of_cancer_sim" ? true : false
+  @pathology.pathology_had_cancer = answer_params[:had_cancer] === "had_cancer_sim" ? true : false
+  @pathology.pathology_little_physical_activity = answer_params[:minutes_of_physical_activity] === "minutes_of_physical_activity_menos150"  ? true : false
+  @pathology.pathology_zero_physical_activity = answer_params[:minutes_of_physical_activity] === "minutes_of_physical_activity_nenhuma"  ? true : false
+  @pathology.pathology_obesity = answer_params[:bmi_classification] === "BMI_OBESITY" ? true : false
+  @pathology.pathology_heart_disease = answer_params[:heart_attack] === "heart_attack_sim" ? true : false
+  @pathology.pathology_dyslipidemia = answer_params[:cholesterol_control] === "cholesterol_control_sim" ? true : false
+  @pathology.pathology_hypertension = answer_params[:treatment_for_blood_pressure] === "treatment_for_blood_pressure_sim" ? true : false
+  @pathology.pathology_high_utilization_of_health_services =  ((answer_params[:evaluate_risk_of_hospitalization] === true || answer_params[:evaluate_causes_of_hospital_visits] === true) && (answer_params[:evaluate_references_searches_of_doctors]===true || answer_params[:evaluate_the_specialties]===true)) ? true : false
 
 
   self.initial_score = CalculateInitialScore(answer_params)

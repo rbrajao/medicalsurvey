@@ -37,7 +37,8 @@ class AnswersController < ApplicationController
     
     @answer = Answer.new(answer_params)
     @answer.calculate_scores(answer_params)
-
+    
+    
     # @answer.initial_score = @answer.CalculateInitialScore(answer_params)
     # puts "Inicial: #{@answer.initial_score}" 
 
@@ -110,7 +111,7 @@ class AnswersController < ApplicationController
     # puts "Final score: #{@answer.final_classification}"
 
     respond_to do |format|
-      if @answer.save
+      if @pathology.save && @answer.save
 
         #format.html { redirect_to answer_url(@answer), notice: "Obrigado por preencher o questionário!" }
         format.html { redirect_to advice_path(id: @answer.patient_id), notice: "Obrigado por preencher o questionário!" }

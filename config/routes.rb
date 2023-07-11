@@ -18,7 +18,5 @@ Rails.application.routes.draw do
   root :to => "home#index"
   get '/users', to: 'users#index'
   get '/advice', to: 'answers#advice', as: 'advice'
-
-
-
+  #post '/create_user', to: 'users#create'
 end

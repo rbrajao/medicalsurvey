@@ -31,5 +31,4 @@ class User < ApplicationRecord
   def self.roles
     ['admin', 'doctor', 'nurse', 'patient']
   end
-
 end

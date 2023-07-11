@@ -18,19 +18,21 @@
       <p class="panel-heading">
         Informações gerais
       </p>
-        <br>
         <div class="columns">
           <% if current_user.patient? %> 
-            <div class="column p-5">Nome: <%=current_user.patient.name%> </div>
+            <div class="column p-5">Nome:<br> <%=current_user.patient.name%> </div>
             <%= form.hidden_field :patient_id, value: current_user.patient.id %>
           <%else%>
-            <div class="column p-5">Nome: <%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %></div>
+            <div class="column p-5">Nome:<br> 
+              <div class=" select is-primary"><%= form.collection_select :patient_id, Patient.all, :id, :name, prompt: "Selecione o paciente" %></div>
+            </div>
           <%end%>
          
-          
-          <div class="column">Data de nascimento: <%= form.date_field :birth_date %></div>
-          <div class="column"> 
-              <%= form.label "Sexo:" %>
+          <div class="column p-5">
+            Data de nascimento:<br> <%= form.date_field :birth_date, class: "input is-rounded is-primary is-small"  %>
+          </div>
+          <div class="column p-5"> 
+              <%= form.label "Sexo:" %><br>
                 <% Answer.sexes.each do |key, value| %>
                 <%= form.radio_button :sex, key, required: true %>
                 <%= form.label "sex_#{key}", value.humanize %>
@@ -360,8 +362,10 @@
 
     <div class="columns">
       <div class="column p-5">
-             Altura: <%= form.text_field :bmi_height, required: true %> (m)
-             Peso: <%= form.text_field :bmi_weight, required: true %> (kg) 
+             Altura (m): <%= form.number_field :bmi_height, required: true, class: "input is-rounded is-primary is-small", step: "0.01" %>
+      </div>
+      <div class="column p-5">
+             Peso (kg): <%= form.number_field :bmi_weight, required: true, class: "input is-rounded is-primary is-small", step: "0.50" %>
       </div>
     </div>
 
@@ -410,8 +414,11 @@
 
     <div class="columns">
       <div class="column p-5">
-             Quantos cigarros você fuma por dia?: <%= form.text_field :cigarettes_quantity %>
-             A quantos anos você fuma? : <%= form.text_field :many_years_smoked %>
+             Quantos cigarros você fuma por dia?
+             <%= form.number_field :cigarettes_quantity, step: "1", class: "input is-rounded is-primary is-small" %>
+      </div>
+      <div class="column p-5">
+             A quantos anos você fuma?<%= form.number_field :many_years_smoked, step: "1",class: "input is-rounded is-primary is-small" %>
       </div>
     </div>
 
@@ -495,11 +502,21 @@
               <%= button_tag "Enviar a resposta", class: "button is-primary is-large", type: "submit" %>
             </div>
           </div>
-
         </div>
+
+        <%unless current_user.patient%>
+          <div class="column">
+            <div class="actions">
+              <div class="has-text-centered">
+                <%= link_to "Voltar para listagem", patients_path, class: "button is-primary is-large" %>
+              </div>
+            </div>
+          </div>
+        <%end%>
       </div>   
   </section>
 <% end %>
+
 <script>
   function showAlert(value, element) {
     
